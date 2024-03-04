@@ -13,7 +13,7 @@ namespace MyWebAPIBasicAuth.Controllers
         [HttpGet("SayHello")]
         public ActionResult SayHello(string name)
         {
-            return Ok($"Hello {name}");
+            return Ok($"Hello {name} {User.Identity.Name}");
         }
     }
 }
