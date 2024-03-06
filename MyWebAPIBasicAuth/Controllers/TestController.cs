@@ -26,5 +26,30 @@ namespace MyWebAPIBasicAuth.Controllers
               "text/txt",
               "text.txt");
         }
+
+        [HttpGet("SetCookie/{key}/{value}"), AllowAnonymous]
+        public IActionResult SetCookie(string key, string value)
+        {
+            Response.Cookies.Append(key, value, new CookieOptions()
+            {
+                Expires = DateTime.Now.AddDays(12),
+                HttpOnly = true,
+                Secure = false
+            });
+            return Ok("ok");
+        }
+
+        [HttpGet("GetCookie/{key}"), AllowAnonymous]
+        public IActionResult GetCookie(string key)
+        {
+            string value = Request.Cookies[key]; return Ok(value);
+        }
+
+        [HttpGet("get_cookie/{key}"), AllowAnonymous]
+        public ActionResult get_cookie(string key)
+        {
+            var value = Request.Cookies[key];
+            return Ok(value);
+        }
     }
 }

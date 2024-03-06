@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using Dapper;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
+using MyWebAPIBasicAuth.Model;
+using System.Data;
+using System.Data.SqlClient;
 using System.Net.Http.Headers;
 using System.Net.Sockets;
 using System.Security.Claims;
@@ -10,6 +14,7 @@ namespace MyWebAPIBasicAuth.Auth
 {
     public class BasicAuth : AuthenticationHandler<AuthenticationSchemeOptions>
     {
+        static string conStr = @"Server=206-11\SQLEXPRESS;Database=TestDB;Integrated Security=True;TrustServerCertificate=Yes";
         public BasicAuth(IOptionsMonitor<AuthenticationSchemeOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock) : base(options, logger, encoder, clock)
         {
 
@@ -28,27 +33,27 @@ namespace MyWebAPIBasicAuth.Auth
                 var login = credArray[0];
                 var psw = credArray[1];
 
-                /*
-                    проверка в БД                 
-                */
-                string cred = "user1:1234";
-
-                if (cred == login + ":" + psw)
+                using (SqlConnection db = new SqlConnection(conStr))
                 {
-                    var claims = new[]
+                    var cred = db.Query<User3>("pUser3", new { login, psw}, commandType:CommandType.StoredProcedure);
+
+                    if (cred)
                     {
+                        var claims = new[]
+                        {
                        new Claim(ClaimTypes.Name, login),
                        new Claim("psw", psw)
                     };
 
-                    var identity = new ClaimsIdentity(claims, Scheme.Name);
-                    var principal = new ClaimsPrincipal(identity);
-                    var ticket = new AuthenticationTicket(principal, Scheme.Name);
-                    return AuthenticateResult.Success(ticket);
-                }
-                else
-                {
-                    return AuthenticateResult.Fail("Login Or Password Incorrect");
+                        var identity = new ClaimsIdentity(claims, Scheme.Name);
+                        var principal = new ClaimsPrincipal(identity);
+                        var ticket = new AuthenticationTicket(principal, Scheme.Name);
+                        return AuthenticateResult.Success(ticket);
+                    }
+                    else
+                    {
+                        return AuthenticateResult.Fail("Login Or Password Incorrect");
+                    }
                 }
             }
             catch (Exception err)
