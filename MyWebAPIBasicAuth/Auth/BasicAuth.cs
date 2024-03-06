@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
 using System.Net.Http.Headers;
+using System.Net.Sockets;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -29,17 +30,24 @@ namespace MyWebAPIBasicAuth.Auth
                 /*
                     проверка в БД                 
                 */
-
-                var claims = new[]
+                string cred = "user1:1234";
+                if (cred == login + ":" + psw)
+                {
+                    var claims = new[]
                 {
                     new Claim(ClaimTypes.Name, login),
                     new Claim("psw", psw)
                 };
 
-                var identity = new ClaimsIdentity(claims, Scheme.Name);
-                var principal = new ClaimsPrincipal(identity);
-                var ticket = new AuthenticationTicket(principal, Scheme.Name);
-                return AuthenticateResult.Success(ticket);
+                    var identity = new ClaimsIdentity(claims, Scheme.Name);
+                    var principal = new ClaimsPrincipal(identity);
+                    var ticket = new AuthenticationTicket(principal, Scheme.Name);
+                    return AuthenticateResult.Success(ticket);
+                }
+                else
+                {
+                    return AuthenticateResult.Fail("Пароль не верен");
+                }
             }
             catch (Exception err)
             {
