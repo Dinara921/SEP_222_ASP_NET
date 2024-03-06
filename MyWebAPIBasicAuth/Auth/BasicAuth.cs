@@ -12,6 +12,7 @@ namespace MyWebAPIBasicAuth.Auth
     {
         public BasicAuth(IOptionsMonitor<AuthenticationSchemeOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock) : base(options, logger, encoder, clock)
         {
+
         }
 
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
@@ -31,13 +32,14 @@ namespace MyWebAPIBasicAuth.Auth
                     проверка в БД                 
                 */
                 string cred = "user1:1234";
+
                 if (cred == login + ":" + psw)
                 {
                     var claims = new[]
-                {
-                    new Claim(ClaimTypes.Name, login),
-                    new Claim("psw", psw)
-                };
+                    {
+                       new Claim(ClaimTypes.Name, login),
+                       new Claim("psw", psw)
+                    };
 
                     var identity = new ClaimsIdentity(claims, Scheme.Name);
                     var principal = new ClaimsPrincipal(identity);
@@ -46,7 +48,7 @@ namespace MyWebAPIBasicAuth.Auth
                 }
                 else
                 {
-                    return AuthenticateResult.Fail("Пароль не верен");
+                    return AuthenticateResult.Fail("Login Or Password Incorrect");
                 }
             }
             catch (Exception err)
