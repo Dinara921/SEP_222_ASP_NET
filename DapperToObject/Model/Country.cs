@@ -11,7 +11,7 @@ namespace DapperToObject.Model
     {
         public int id { get; set; }
         public string name { get; set; }
-        public ICollection city { get; set; }
+        public List<City> city { get; set; } = new List<City>();
     }
 
     public class City
