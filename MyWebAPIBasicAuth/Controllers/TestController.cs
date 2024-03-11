@@ -42,13 +42,7 @@ namespace MyWebAPIBasicAuth.Controllers
         [HttpGet("GetCookie/{key}"), AllowAnonymous]
         public IActionResult GetCookie(string key)
         {
-            string value = Request.Cookies[key]; return Ok(value);
-        }
-
-        [HttpGet("get_cookie/{key}"), AllowAnonymous]
-        public ActionResult get_cookie(string key)
-        {
-            var value = Request.Cookies[key];
+            string value = Request.Cookies[key]; 
             return Ok(value);
         }
     }

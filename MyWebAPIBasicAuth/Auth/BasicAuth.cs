@@ -35,15 +35,23 @@ namespace MyWebAPIBasicAuth.Auth
 
                 using (SqlConnection db = new SqlConnection(conStr))
                 {
-                    var cred = db.Query<User3>("pUser3", new { login, psw}, commandType:CommandType.StoredProcedure);
+                    db.Open();
+                    var parameters = new DynamicParameters();
+                    parameters.Add("@login", login);
+                    parameters.Add("@psw", psw);
+                    parameters.Add("@res_out", dbType: DbType.Int32, direction: ParameterDirection.Output);
 
-                    if (cred)
+                    db.Execute("pUser3", parameters, commandType: CommandType.StoredProcedure);
+
+                    int cred = parameters.Get<int>("@res_out");
+
+                    if (cred == 1)
                     {
                         var claims = new[]
                         {
-                       new Claim(ClaimTypes.Name, login),
-                       new Claim("psw", psw)
-                    };
+                            new Claim(ClaimTypes.Name, login),
+                            new Claim("psw", psw)
+                        };
 
                         var identity = new ClaimsIdentity(claims, Scheme.Name);
                         var principal = new ClaimsPrincipal(identity);
