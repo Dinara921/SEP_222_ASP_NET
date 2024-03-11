@@ -38,7 +38,7 @@ namespace MyWebAPIBasicAuth.Auth
                     db.Open();
                     var parameters = new DynamicParameters();
                     parameters.Add("@login", login);
-                    parameters.Add("@psw", psw);
+                    parameters.Add("@pwd", psw);
                     parameters.Add("@res_out", dbType: DbType.Int32, direction: ParameterDirection.Output);
 
                     db.Execute("pUser3", parameters, commandType: CommandType.StoredProcedure);
@@ -50,7 +50,7 @@ namespace MyWebAPIBasicAuth.Auth
                         var claims = new[]
                         {
                             new Claim(ClaimTypes.Name, login),
-                            new Claim("psw", psw)
+                            new Claim("pwd", psw)
                         };
 
                         var identity = new ClaimsIdentity(claims, Scheme.Name);
