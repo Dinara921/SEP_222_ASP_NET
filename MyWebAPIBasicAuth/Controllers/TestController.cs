@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.Metrics;
 using System.Security.Claims;
 using System.Text;
 
@@ -47,3 +48,19 @@ namespace MyWebAPIBasicAuth.Controllers
         }
     }
 }
+
+
+//ALTER PROC[dbo].[pUser3]
+//@login NVARCHAR(200),
+//@pwd NVARCHAR(200),
+//@res_out INT OUT
+//AS
+//BEGIN
+//    SET @res_out = (
+//        SELECT CASE WHEN EXISTS (
+//            SELECT 1
+//            FROM User3
+//            WHERE [login] = @login AND[pwd] = @pwd
+//        ) THEN 1 ELSE 0 END
+//    )
+//END
