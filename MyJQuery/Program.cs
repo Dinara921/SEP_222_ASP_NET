@@ -14,6 +14,9 @@ namespace MyJQuery
 
             // Configure the HTTP request pipeline.
 
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+
             app.UseAuthorization();
 
 

@@ -3,8 +3,32 @@
 <head>
     <meta charset="utf-8" />
     <title></title>
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="Script/bootstrap.min.js"></script>
+    <script src="Script/jquery-3.4.1.min.js"></script>
+    <script>
+        $(document).ready(function()
+        {
+            $("#myButton").click(function()
+            {
+                var value = $("#tb_test").val()
+                //console.log(value)
+                $("#divtest").html('<b>' + value + '</b>').css('color', 'silver')
+                alert(value)
+            })    
+        })
+        function f1()
+        {
+            alert('Hello STEP')
+        }
+    </script>
 </head>
 <body>
-     
+     <button id="myButton"> Hello </button>
+     <button id="myButton2" onclick="f1()"> Hello </button>
+     <input type="text" value="Hello World" id="tb_test">
+     <div id = "divtest">
+
+     </div>
 </body>
 </html>
