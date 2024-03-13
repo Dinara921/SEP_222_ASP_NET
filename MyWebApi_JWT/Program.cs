@@ -9,6 +9,7 @@ namespace MyWebApi_JWT
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
             var configuration = builder.Configuration;
 
             builder.Services.AddAuthentication(z =>
@@ -30,7 +31,7 @@ namespace MyWebApi_JWT
                     IssuerSigningKey = new SymmetricSecurityKey(Key)
                 };
             });
-            // Add services to the container.
+
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -45,7 +46,7 @@ namespace MyWebApi_JWT
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
 
