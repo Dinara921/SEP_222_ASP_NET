@@ -4,35 +4,104 @@
     <meta charset="utf-8" />
     <title></title>
     <link href="Content/bootstrap.min.css" rel="stylesheet" />
-    <script src="Script/bootstrap.min.js"></script>
     <script src="Script/jquery-3.4.1.min.js"></script>
+    <script src="Script/bootstrap.min.js"></script>
     <script>
-        $(document).ready(function()
-        {
-            $("#myButton").click(function()
-            {
-                // var value = $("#tb_test").val()
-                // console.log(value)
-                // $("#divtest").html('<b>' + value + '</b>').css('color', 'silver')
-                // alert(value)
-                $.ajax
-                ({
-                     
-                })
-            })    
-        })
-        function f1()
-        {
-            alert('Hello STEP')
-        }
+        $(document).ready(function () {
+               $("#myButton1").click(function () 
+               {
+                    $.ajax({
+                           type: "GET",
+                           url: "http://localhost:5204/test/sayhello",
+                           success: function (data) 
+                           {
+                               $("#tableId").empty();
+                               $.each(data, function (index, row) 
+                               {
+                                    var newRow = "<tr>";
+                                    newRow += "<td>" + row.id + "</td>";
+                                    newRow += "<td>" + row.name + "</td>";
+                                    newRow += "</tr>";
+                                    $("#tableId").append(newRow);
+                                });
+                           },
+                           error: function () 
+                           {
+                                console.log("Error");
+                           }
+                      });
+                });
+
+                $("#myButton2").click(function () 
+                {
+                    $.ajax({
+                           type: "GET",
+                           url: "http://localhost:5204/test/sayhello",
+                           success: function (data) 
+                           {
+                               $("#tableId").empty();
+                               $.each(data, function (index, row) 
+                               {
+                                  var newRow = "<li>" + row.name + "</li>";
+                                  $("#tableId").append(newRow);
+                               });
+                            },
+                            error: function () 
+                            {
+                                console.log("Error");
+                            }
+                        });
+                });
+
+                $("#myButton3").click(function () 
+                {
+                    $.ajax({
+                           type: "GET",
+                           url: "http://localhost:5204/test/sayhello",
+                           success: function (data) 
+                           {
+                               $("#tableId").empty();
+                               var selectOptions = "";
+                               $.each(data, function (index, row) 
+                               {
+                                    selectOptions += "<option value='" + row.id + "'>" + row.name + "</option>";
+                               });
+                               var select = "<select>" + selectOptions + "</select>";
+                               $("#tableId").append(select);
+                            },
+                            error: function () 
+                            {
+                                console.log("Error");
+                            }
+                        });
+                });
+            });
+         // function F1() 
+         // {
+         //     alert('hello step');
+         // }   
     </script>
 </head>
-<body>
-     <button id="myButton"> Hello </button>
-     <button id="myButton2" onclick="f1()"> Hello </button>
-     <input type="text" value="Hello World" id="tb_test">
-     <div id = "divtest">
 
-     </div>
+<body>
+    <button id="myButton1">
+        City Table
+    </button>
+    <button id="myButton2">
+        City Li
+    </button>
+    <button id="myButton3">
+        City Select
+    </button>
+    <!-- <button id="myButton2" onclick="F1()">
+        Hello2
+    </button>
+    <input type="text" value="hello world" id="tbTest" />
+    <div id="divTest">
+
+    </div> -->
+    <table id="tableId">
+
+    </table>
 </body>
 </html>

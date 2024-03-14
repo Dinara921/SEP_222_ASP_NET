@@ -24,8 +24,8 @@ namespace MyWebAPI.Controllers
             return Ok("hello " + name);
         }
 
-        [Route("getStudentById/{id}")]
-        public ActionResult getStudentById(string id)
+        [Route("getStudentById/{name}")]
+        public ActionResult getStudentById(string name)
         {
 
             return Ok("hello " + name);

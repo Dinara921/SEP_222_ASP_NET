@@ -16,6 +16,7 @@ namespace MyWebApi_JWT.Controllers
     [ApiController]
     public class ValidateController : ControllerBase
     {
+        string conStr = @"Server=DESKTOP-S23LER7;Database=ASP_NET;Trusted_Connection=True;TrustServerCertificate=Yes;";
         IConfiguration config;
         public ValidateController(IConfiguration config) 
         {
@@ -26,21 +27,29 @@ namespace MyWebApi_JWT.Controllers
         [HttpPost, Route("GetToken")]
         public ActionResult GetToken(UserModel model)
         {
-            //using (SqlConnection db = new SqlConnection(@"Server=206-11\SQLEXPRESS;Database=testDB;Trusted_Connection=True;TrustServerCertificate=Yes;"))
-            //{
-            //    DynamicParameters p = new DynamicParameters(model);
-            //    int count = db.ExecuteScalar<int>("pUserValidate", p, commandType: CommandType.StoredProcedure);
-            //    if (count == 0)
-            //        return Unauthorized("Гуляй Вася");
-            //}
+            using (SqlConnection db = new SqlConnection(conStr))
+            {
+                db.Open();
+                var parameters = new DynamicParameters();
+                parameters.Add("@login", model.login);
+                parameters.Add("@pwd", model.password);
+                parameters.Add("@res_out", dbType: DbType.Int32, direction: ParameterDirection.Output);
+
+                db.Execute("pUser3;2", parameters, commandType: CommandType.StoredProcedure);
+
+                int count = parameters.Get<int>("@res_out");
+
+                if (count == 0)
+                    return Unauthorized("User Not Found");
+            }
 
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var claims = new[] 
             {
-                      new Claim("myRole", "admin"),
-                      new Claim("dateBirth", "2000-01-01")
+                      new Claim("login", model.login),
+                      new Claim("password", model.password)
             };
 
             var token = new JwtSecurityToken(config["Jwt:Issuer"],
@@ -60,10 +69,10 @@ namespace MyWebApi_JWT.Controllers
             return Ok(result);
         }
 
-        [HttpGet, Authorize, Route("GetTest/{name}")]
-        public ActionResult GetTest(string name)
+        [HttpGet, Authorize, Route("GetTest")]
+        public ActionResult GetTest()
         {
-            return Ok("Hello " + name + " " + User.FindFirst("myRole")?.Value);
+            return Ok(User.FindFirst("login")?.Value + " " + User.FindFirst("password")?.Value);
         }
     }
 }
