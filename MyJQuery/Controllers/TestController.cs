@@ -26,6 +26,20 @@ namespace MyJQuery.Controllers
             }
         }
 
+        [HttpGet("GetCityAll")]
+        public ActionResult GetCityAll()
+        {
+            AddCorsHeaders();
+            List<City> list = new List<City>()
+            {
+                new City { id=1, name = "Astana"},
+                new City { id=2, name = "Almaty"},
+                new City { id=3, name = "Aktau"},
+                new City { id=4, name = "Qostanay"}
+            };
+            return Ok(list);
+        }
+
         private void AddCorsHeaders()
         {
             Response.Headers.Add("Access-Control-Allow-Origin", "*");

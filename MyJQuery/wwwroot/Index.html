@@ -6,7 +6,7 @@
     <link href="Content/bootstrap.min.css" rel="stylesheet" />
     <script src="Script/jquery-3.4.1.min.js"></script>
     <script src="Script/bootstrap.min.js"></script>
-    <script>
+    <!-- <script>
         $(document).ready(function () {
                $("#myButton1").click(function () 
                {
@@ -23,7 +23,7 @@
                                     newRow += "<td>" + row.name + "</td>";
                                     newRow += "</tr>";
                                     $("#tableId").append(newRow);
-                                });
+                               });
                            },
                            error: function () 
                            {
@@ -80,19 +80,81 @@
          // {
          //     alert('hello step');
          // }   
-    </script>
+    </script> -->
+    <style> 
+        #city thead
+        {
+            background: gray;
+            font-weight: bold;
+        }
+        #city td
+        {
+            padding: 20px;
+        }
+    </style>
+  <script>
+    $(document).ready(function () 
+    {
+        $("#myButton1").click(function () 
+        {                   
+            var city='<table border="1">';
+            city+='<thead><tr><td>ID</td><td>Name</td></tr></thead>';
+            city+='<tr><td>1</td><td>Almaty</td></tr>';
+            city+='<tr><td>2</td><td>Astana</td></tr>';
+            city+='<tr><td>3</td><td>Qostanay</td></tr>';
+            city+='<tr><td>4</td><td>Qaraganda</td></tr>';
+            city+='</table>';
+
+            $("#city").html(city)     
+        });
+
+        $("#myButton2").click(function () 
+        {                   
+            $.ajax({
+                       type: "GET",
+                       url: "http://localhost:5204/test/GetCityAll",
+                       success: function (data) 
+                       {
+                           console.warn(data);
+                           let html = '';
+                           html += "<table border='1' cellpadding='1' cellspacing='1' width='500'>";
+                           html += "<tr bgcolor='#ffd400'>";
+                           html += "<td class='text-center'>id</td>"
+                           html += "<td class='text-center'>name</td>";
+                           html += "</tr>";
+                           $.each(data, function (i, item) 
+                           {
+                                html += "<tr><td>" + item.id + "</td>" +
+                               "<td>" + item.name + "</td></tr>";
+                           });
+                           html += "</table >";
+                           $("#city").html(html);
+                        },
+                           error: function () 
+                           {
+                                console.log("Error");
+                           }
+                  });
+        });
+    });
+</script>
 </head>
 
 <body>
-    <button id="myButton1">
-        City Table
-    </button>
-    <button id="myButton2">
+    <div id="city">
+        <button id="myButton1">
+            City Table
+        </button>
+        <button id="myButton2">
+            City Table2
+        </button>
+     </div>
+    <!-- <button id="myButton2">
         City Li
     </button>
     <button id="myButton3">
         City Select
-    </button>
+    </button> -->
     <!-- <button id="myButton2" onclick="F1()">
         Hello2
     </button>
@@ -100,8 +162,5 @@
     <div id="divTest">
 
     </div> -->
-    <table id="tableId">
-
-    </table>
 </body>
 </html>
