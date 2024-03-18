@@ -4,8 +4,11 @@
     <meta charset="utf-8" />
     <title></title>
     <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="Content/jquery-confirm.css" rel="stylesheet" />
+
     <script src="Script/jquery-3.4.1.min.js"></script>
     <script src="Script/bootstrap.min.js"></script>
+    <script src="Script/jquery-confirm.js"></script>
     <!-- <script>
         $(document).ready(function () {
                $("#myButton1").click(function () 
@@ -136,6 +139,28 @@
                            }
                   });
         });
+        $("#myButton3").click(function () 
+                {
+                    $.ajax({
+                           type: "GET",
+                           url: "http://localhost:5204/test/GetCityAll",
+                           success: function (data) 
+                           {
+                               $("#city").empty();
+                               var selectOptions = "";
+                               $.each(data, function (index, row) 
+                               {
+                                    selectOptions += "<option value='" + row.id + "'>" + row.name + "</option>";
+                               });
+                               var select = "<select>" + selectOptions + "</select>";
+                               $("#city").append(select);
+                            },
+                            error: function () 
+                            {
+                                console.log("Error");
+                            }
+                        });
+                });
     });
 </script>
 </head>
@@ -148,13 +173,11 @@
         <button id="myButton2">
             City Table2
         </button>
+        <button id="myButton3">
+            City Select
+        </button> 
      </div>
-    <!-- <button id="myButton2">
-        City Li
-    </button>
-    <button id="myButton3">
-        City Select
-    </button> -->
+     
     <!-- <button id="myButton2" onclick="F1()">
         Hello2
     </button>
