@@ -9,6 +9,7 @@
     <script src="Script/jquery-3.4.1.min.js"></script>
     <script src="Script/bootstrap.min.js"></script>
     <script src="Script/jquery-confirm.js"></script>
+    <script src="Script/MyJS.js"></script>
     <!-- <script>
         $(document).ready(function () {
                $("#myButton1").click(function () 
@@ -96,73 +97,8 @@
         }
     </style>
   <script>
-    $(document).ready(function () 
-    {
-        $("#myButton1").click(function () 
-        {                   
-            var city='<table border="1">';
-            city+='<thead><tr><td>ID</td><td>Name</td></tr></thead>';
-            city+='<tr><td>1</td><td>Almaty</td></tr>';
-            city+='<tr><td>2</td><td>Astana</td></tr>';
-            city+='<tr><td>3</td><td>Qostanay</td></tr>';
-            city+='<tr><td>4</td><td>Qaraganda</td></tr>';
-            city+='</table>';
-
-            $("#city").html(city)     
-        });
-
-        $("#myButton2").click(function () 
-        {                   
-            $.ajax({
-                       type: "GET",
-                       url: "http://localhost:5204/test/GetCityAll",
-                       success: function (data) 
-                       {
-                           console.warn(data);
-                           let html = '';
-                           html += "<table border='1' cellpadding='1' cellspacing='1' width='500'>";
-                           html += "<tr bgcolor='#ffd400'>";
-                           html += "<td class='text-center'>id</td>"
-                           html += "<td class='text-center'>name</td>";
-                           html += "</tr>";
-                           $.each(data, function (i, item) 
-                           {
-                                html += "<tr><td>" + item.id + "</td>" +
-                               "<td>" + item.name + "</td></tr>";
-                           });
-                           html += "</table >";
-                           $("#city").html(html);
-                        },
-                           error: function () 
-                           {
-                                console.log("Error");
-                           }
-                  });
-        });
-        $("#myButton3").click(function () 
-                {
-                    $.ajax({
-                           type: "GET",
-                           url: "http://localhost:5204/test/GetCityAll",
-                           success: function (data) 
-                           {
-                               $("#city").empty();
-                               var selectOptions = "";
-                               $.each(data, function (index, row) 
-                               {
-                                    selectOptions += "<option value='" + row.id + "'>" + row.name + "</option>";
-                               });
-                               var select = "<select>" + selectOptions + "</select>";
-                               $("#city").append(select);
-                            },
-                            error: function () 
-                            {
-                                console.log("Error");
-                            }
-                        });
-                });
-    });
-</script>
+ 
+  </script>
 </head>
 
 <body>
@@ -177,13 +113,56 @@
             City Select
         </button> 
      </div>
-     
+     <button onclick="confirm()">
+        confirm1
+    </button>
+
+    <button onclick="showModal()">
+        showModal
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Edit book</h4>
+                </div>
+                <div class="modal-body" style="padding:40px 50px;">
+                    <div class="form-group">
+                        <label for="Title">Title</label>
+                        <input type="text" class="form-control" id="title">
+                    </div>
+                    <div class="form-group">
+                        <label for="Year">Year</label>
+                        <input type="text" class="form-control" id="year" placeholder="Enter year">
+                    </div>
+                    <div class="form-group">
+                        <label for="cbAuthor">cbAuthor</label>
+                        <select id="cbAuthor" class="form-control">
+                            <option></option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="cbCategory">cbCategory</label>
+                        <select id="cbCategory" class="form-control">
+                            <option></option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-success btn-block" onclick="Edit2();">Edit</button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- <button id="myButton2" onclick="F1()">
         Hello2
     </button>
     <input type="text" value="hello world" id="tbTest" />
     <div id="divTest">
-
     </div> -->
 </body>
 </html>

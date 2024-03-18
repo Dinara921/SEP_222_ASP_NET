@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyJQuery.Model;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Reflection;
@@ -13,6 +14,17 @@ namespace MyJQuery.Controllers
     public class TestController : ControllerBase
     {
         string conStr = @"Server=DESKTOP-S23LER7;Database=ASP_NET;Trusted_Connection=True;TrustServerCertificate=Yes;";
+        List<City>lst;
+        TestController()
+        {
+            lst = new List<City>()
+            {
+                new City { id=1, name = "Astana"},
+                new City { id=2, name = "Almaty"},
+                new City { id=3, name = "Aktau"},
+                new City { id=4, name = "Qostanay"}
+            };
+        } 
 
         [HttpGet("SayHello")]
         public ActionResult SayHello()
@@ -38,6 +50,14 @@ namespace MyJQuery.Controllers
                 new City { id=4, name = "Qostanay"}
             };
             return Ok(list);
+        }
+
+        [HttpPost("AddCity")]
+        public ActionResult AddCity(City city)
+        {
+            AddCorsHeaders();
+            lst.Add(city);
+            return Ok(lst);
         }
 
         private void AddCorsHeaders()
