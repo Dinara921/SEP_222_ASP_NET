@@ -29,7 +29,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DapperToObject", "DapperToO
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyWebApi_JWT", "MyWebApi_JWT\MyWebApi_JWT.csproj", "{1FBA8218-A1C7-498E-98D6-1323FD0DC311}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyJQuery", "MyJQuery\MyJQuery.csproj", "{9120EDB9-D6BC-4A0D-AA25-EA82C99C1EAE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyJQuery", "MyJQuery\MyJQuery.csproj", "{9120EDB9-D6BC-4A0D-AA25-EA82C99C1EAE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyJQuery_Music", "MyJQuery_Music\MyJQuery_Music.csproj", "{88EFC27D-1694-4041-8676-F83D49ADF440}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -93,6 +95,10 @@ Global
 		{9120EDB9-D6BC-4A0D-AA25-EA82C99C1EAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9120EDB9-D6BC-4A0D-AA25-EA82C99C1EAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9120EDB9-D6BC-4A0D-AA25-EA82C99C1EAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88EFC27D-1694-4041-8676-F83D49ADF440}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88EFC27D-1694-4041-8676-F83D49ADF440}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88EFC27D-1694-4041-8676-F83D49ADF440}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88EFC27D-1694-4041-8676-F83D49ADF440}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,49 @@
+*{
+    margin: 0;
+    padding: 0;
+    background-image: url("1.jpg");
+    background-size: 110% auto;
+}
+
+.Container
+{
+    width: 100%;
+    height: auto;    
+    display: flex;
+    justify-content: space-between;
+}
+.Container_panel
+{
+    width: 100%;
+    padding: 2%;
+    margin: 2%;
+    border: 1px solid black;
+    background: LightCyan;
+      
+}
+.id
+{
+    width: 40%;
+}
+button
+{
+    width: 35%;
+    background: DarkTurquoise;
+    border-radius: 10px; 
+    padding: 1%;
+    border: 1px solid DarkTurquoise;
+}
+label
+{
+    background: LightCyan;
+}
+select
+{
+    width: 50%;
+    padding-left: 3%;
+}
+.add
+{
+    align-items: center;  
+    margin-left: 35%;
+}

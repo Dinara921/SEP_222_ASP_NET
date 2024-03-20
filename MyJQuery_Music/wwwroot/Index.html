@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="Content/jquery-confirm.css" rel="stylesheet" />
+    <link href="Content/style.css" rel="stylesheet" />
+   
+    <script src="Script/jquery-3.4.1.min.js"></script>
+    <script src="Script/bootstrap.min.js"></script>
+    <script src="Script/jquery-confirm.js"></script>
+    <script src="Script/MyJS.js"></script>
+    <style> 
+        #city thead
+        {
+            background: gray;
+            font-weight: bold;
+        }
+        #city td
+        {
+            padding: 20px;
+        }
+    </style>
+  <script>
+     
+  </script>
+</head>
+<body>
+    <div class="Container" id = "Container">
+        <div class = "Container_panel" id = "Container_search" >
+            <label for="">Поиск</label>
+            <select name="select" class = "category" id = "category">
+                <option value="0" selected>Все</option>
+                <option value="1">Jaz</option>
+                <option value="2">Pop</option>
+                <option value="3">Рок</option>
+                <option value="4">Классическая</option>
+            </select>
+        </div>
+        <div class = "Container_panel" id = "Container_add" >
+            <button type="button" class="add"  div = "add">Добавить</button> 
+        </div>
+        <div class = "Container_panel" id = "Container_download" >
+            <label for="">Загрузить файл</label>
+            <select name="select" class = "" id = "category">
+                <option value="0" selected>Выберите формат</option>
+                <option value="XLXS" >XLXS</option>
+                <option value="CSV">CSV</option>
+            </select>
+        </div>
+    </div>
+</body>
+</html>

@@ -42,22 +42,15 @@ namespace MyJQuery.Controllers
         public ActionResult GetCityAll()
         {
             AddCorsHeaders();
-            List<City> list = new List<City>()
-            {
-                new City { id=1, name = "Astana"},
-                new City { id=2, name = "Almaty"},
-                new City { id=3, name = "Aktau"},
-                new City { id=4, name = "Qostanay"}
-            };
-            return Ok(list);
+            return Ok(lst);
         }
 
-        [HttpPost("AddCity")]
-        public ActionResult AddCity(City city)
+        [HttpPost("createCity")]
+        public ActionResult createCity(City city)
         {
             AddCorsHeaders();
             lst.Add(city);
-            return Ok(lst);
+            return Ok("ok");
         }
 
         private void AddCorsHeaders()
