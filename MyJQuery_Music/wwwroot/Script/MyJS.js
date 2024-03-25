@@ -57,11 +57,26 @@ $(document).ready(function () {
             }
         });
     });
+     
+    $("#add").click(function () 
+    {
+        showModal();
+    });
 
+    $('#saveButton').click(function() 
+    {
+        confirmSave();
+    });
+
+    $('#cancelSaveButton').click(function() 
+    {
+        $('#confirmModal').modal('hide');
+    });
 });
 
 
-function refreshTrackList() {
+function refreshTrackList() 
+{
     $.ajax({
         type: "GET",
         url: "Music/GetAllOrCategoryMusic",
@@ -126,20 +141,46 @@ function deleteTrack(trackId)
     
 }
 
-function EditTrack(trackId, name, category, duration) 
+function confirmSave() 
 {
-    var requestData = {
+    $('#confirmModal').modal('show');
+}
+
+function showModal() 
+{
+    console.log('show');
+    $("#editModal").modal("show");    
+}
+
+function confirmSave() 
+{
+    var trackId = $('#trackId').val();
+    var trackName = $('#trackName').val();
+    var trackCategory = $('#trackCategory').val();
+    var trackDuration = $('#trackDuration').val();
+
+    $('#confirmModal').modal('show').on('click', '#confirmSaveButton', function() 
+    {
+        $('#confirmModal').modal('hide');
+        AddOrEditTrack(trackId, trackName, trackCategory, trackDuration);
+    });
+}
+
+function AddOrEditTrack(trackId, name, category, duration) 
+{
+    var requestData = 
+    {
         id: trackId,
         name: name,
-        category: category,
+        category: String(category),
         duration: duration
     };
+
     $.ajax({
         type: "POST",
-            headers: 
-            {
-                'Content-Type': 'application/json'
-            },
+        headers: {
+            'Content-Type': 'application/json'
+        },
         url: "Music/AddOrEditMusic",
         data: JSON.stringify(requestData),
         success: function (response) 
@@ -147,15 +188,9 @@ function EditTrack(trackId, name, category, duration)
             showModal();
             refreshTrackList();
         },
-        error: function (xhr, status, error)
-         {
+        error: function (xhr, status, error) 
+        {
             console.log("Error");
         }
     });
-}
-
-function showModal() 
-{
-    console.log('show');
-    $("#editModal").modal("show");    
 }

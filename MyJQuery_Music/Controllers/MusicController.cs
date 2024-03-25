@@ -35,20 +35,14 @@ namespace MyJQuery_Music.Controllers
         }
 
         [HttpPost("AddOrEditMusic")]
-        public ActionResult AddOrEditMusic(int id, string name, string category, string duration )
+        public ActionResult AddOrEditMusic(int id, string name, int category_id, string duration)
         {
             using (SqlConnection db = new SqlConnection(conStr))
             {
                 db.Open();
-                var parameters = new DynamicParameters();
-                parameters.Add("@Id", id);
-                parameters.Add("@Name", name);
-                parameters.Add("@Category", category);
-                parameters.Add("@Duration", duration);
-
                 try
                 {
-                    db.Execute("pMusic;2", parameters, commandType: CommandType.StoredProcedure);
+                    db.ExecuteAsync("pMusic;2", new { id = id, name = name, category_id = category_id, duration=duration}, commandType: CommandType.StoredProcedure);
                     return Ok("Ok");
                 }
                 catch (Exception ex)
