@@ -13,17 +13,17 @@
     <script src="Script/jquery-confirm.js"></script>
     <script src="Script/MyJS.js"></script>
     <style> 
-    div#Grid_block 
-    {
-       background-color: #ffffff !important;
-    }
+        div#Grid_block 
+        {
+            background-color: #ffffff !important;
+        }
     </style>
 </head>
 <body>
     <div class="Block" id = "Block">
     <div class="Container" id = "Container">
         <div class = "Container_panel" id = "Container_search" >
-            <label for="">Поиск</label>
+            <label for="category">Поиск</label>
             <select name="form-select" class = "category" id = "category">
                 <option value="0" selected>Все категории</option>
                 <option value="1">Jaz</option>
@@ -33,15 +33,17 @@
             </select>
         </div>
         <div class = "Container_panel" id = "Container_add" >
-            <button type="button" class="btn btn-info"  id = "add">Добавить</button> 
+            <label for="add">Добавить музыку</label>
+            <button type="button" class="btn btn-primary"  id = "add">Добавить</button> 
         </div>
         <div class = "Container_panel" id = "Container_download" >
-            <label for="">Загрузить файл</label>
-            <select name="form-select" class = "category" id = "category">
+            <label class ="load" for="format-select">Загрузить файл</label><br>
+            <select name="form-select" class = "category" id = "format-select">
                 <option value="0" selected>Выберите формат</option>
-                <option value="XLXS" >XLXS</option>
-                <option value="CSV">CSV</option>
+                <option value="1" >XLXS</option>
+                <option value="2">CSV</option>
             </select>
+            <button type="button" class="btn btn-primary" onclick="uploadFile()">Загрузить</button>
         </div>
     </div>
 
@@ -50,7 +52,7 @@
     </div>
 
      <!-- Modal -->
-     <div class="modal fade" id="editModal" role="dialog">
+     <div class="modal fade" id="AddModal" role="dialog">
        <div class="modal-dialog">
          <div class="modal-content">
             <div class="modal-header">
@@ -108,3 +110,4 @@
 </div>
 </body>
 </html>
+                                                     

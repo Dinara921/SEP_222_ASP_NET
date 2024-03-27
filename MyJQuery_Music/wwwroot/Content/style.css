@@ -56,8 +56,11 @@ select
     padding: 2%;
     font-size: 1.0em;
 }
-.btn-info
+.btn-primary
 {
-    align-items: center;  
-    margin-left: 35%;
+    margin-left: 5%;  
+}
+.load
+{
+    margin-left: 30%;
 }
