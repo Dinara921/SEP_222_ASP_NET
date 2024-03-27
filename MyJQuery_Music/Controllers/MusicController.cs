@@ -13,8 +13,9 @@ namespace MyJQuery_Music.Controllers
     [ApiController]
     public class MusicController : ControllerBase
     {
-        string conStr = @"Server=DESKTOP-S23LER7;Database=ASP_MusicJQuery;Trusted_Connection=True;TrustServerCertificate=Yes;";
-        
+        //string conStr = @"Server=DESKTOP-S23LER7;Database=ASP_MusicJQuery;Trusted_Connection=True;TrustServerCertificate=Yes;";
+        string conStr = @"Server=206-11\SQLEXPRESS;Database=ASP_Music;Trusted_Connection=True;TrustServerCertificate=Yes;";
+
         [HttpGet("GetAllOrCategoryMusic")]
         public ActionResult GetAllOrCategoryMusic(int category)
         {
@@ -53,84 +54,88 @@ namespace MyJQuery_Music.Controllers
             }
         }
 
-        [HttpPost("DownloadFormatMusic")]
-        public ActionResult DownloadFormatMusic([FromBody] Format f)
+        [HttpGet("DownloadFormatMusic/{format}/{category}")]
+        public ActionResult DownloadFormatMusic(int format, int category)
         {
-            if (f.format == 1)
+            using (SqlConnection db = new SqlConnection(conStr))
             {
-                using (var ms = new MemoryStream())
+                try
                 {
-                    using (XLWorkbook wb = new XLWorkbook())
-                    {
-                        var ws = wb.AddWorksheet("report");
-                        ws.Cell(1, 1).Value = "Id";
-                        ws.Cell(1, 1).Style.Font.Bold = true;
-                        ws.Cell(1, 1).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
-
-                        ws.Cell(1, 2).Value = "Name";
-                        ws.Cell(1, 2).Style.Font.Bold = true;
-                        ws.Cell(1, 2).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
-
-                        ws.Cell(1, 3).Value = "Category";
-                        ws.Cell(1, 3).Style.Font.Bold = true;
-                        ws.Cell(1, 3).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
-
-                        ws.Cell(1, 4).Value = "Duration";
-                        ws.Cell(1, 4).Style.Font.Bold = true;
-                        ws.Cell(1, 4).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
-
-                        ws.RangeUsed().SetAutoFilter();
-                        ws.Columns("A", "B").AdjustToContents();
-                        ws.SheetView.FreezeRows(1);
-
-                        wb.SaveAs(ms);
-                        ms.Position = 0;
-                        ms.Flush();
-                        var bytes = ms.ToArray();
-
-                        return File(bytes,
-                            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                            "report_" + DateTime.Now.ToString("ddMMyyyy_hhmmss") + ".xlsx");
-                    }
-                }
-            }
-            else if (f.format == 2)
-            {
-                List<Music> musicList;
-                using (var db = new SqlConnection(conStr))
-                {
-                    string query = "SELECT id, name, category_id, duration FROM Music";
-                    SqlCommand command = new SqlCommand(query, db);
                     db.Open();
-                    using (var reader = command.ExecuteReader())
+
+                    var musicList = db.Query<Music>("pMusic", new { category = category }, commandType: CommandType.StoredProcedure).ToList();
+
+                    if (format == 1)
                     {
-                        musicList = new List<Music>();
-                        while (reader.Read())
+                        using (var ms = new MemoryStream())
                         {
-                            Music music = new Music
+                            using (XLWorkbook wb = new XLWorkbook())
                             {
-                                id = Convert.ToInt32(reader["id"]),
-                                name = reader["name"].ToString(),
-                                category = reader["category_id"].ToString(),
-                                duration = reader["duration"].ToString()
-                            };
-                            musicList.Add(music);
+                                var ws = wb.AddWorksheet("report");
+                                ws.Cell(1, 1).Value = "Id";
+                                ws.Cell(1, 1).Style.Font.Bold = true;
+                                ws.Cell(1, 1).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                                ws.Cell(1, 2).Value = "Name";
+                                ws.Cell(1, 2).Style.Font.Bold = true;
+                                ws.Cell(1, 2).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                                ws.Cell(1, 3).Value = "Category";
+                                ws.Cell(1, 3).Style.Font.Bold = true;
+                                ws.Cell(1, 3).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                                ws.Cell(1, 4).Value = "Duration";
+                                ws.Cell(1, 4).Style.Font.Bold = true;
+                                ws.Cell(1, 4).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                                ws.RangeUsed().SetAutoFilter();
+                                ws.Columns("A", "B").AdjustToContents();
+                                ws.SheetView.FreezeRows(1);
+
+                                for (int i = 0; i < musicList.Count; i++)
+                                {
+                                    var music = musicList[i];
+                                    ws.Cell(i + 2, 1).Value = music.id;
+                                    ws.Cell(i + 2, 2).Value = music.name;
+                                    ws.Cell(i + 2, 3).Value = music.category;
+                                    ws.Cell(i + 2, 4).Value = music.duration;
+                                }
+
+                                wb.SaveAs(ms);
+                                ms.Position = 0;
+                                ms.Flush();
+                                var bytes = ms.ToArray();
+
+                                return File(bytes,
+                                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                                    "report_" + DateTime.Now.ToString("ddMMyyyy_hhmmss") + ".xlsx");
+                            }
                         }
                     }
-                }
+                    else if (format == 2)
+                    {
 
-                var builder = new StringBuilder();
-                builder.AppendLine("Id,Name,Category,Duration");
-                foreach (var music in musicList)
+                        var builder = new StringBuilder();
+                        builder.AppendLine("Id,Name,Category,Duration");
+                        foreach (var music in musicList)
+                        {
+                            builder.AppendLine($"{music.id},{music.name},{music.category},{music.duration}");
+                        }
+                        byte[] csvBytes = Encoding.UTF8.GetBytes(builder.ToString());
+
+                        return File(csvBytes, "text/csv", "music_report.csv");
+                    }
+                    else
+                    {
+                        return BadRequest("Unsupported format");
+                    }
+                }
+                catch (Exception ex)
                 {
-                    builder.AppendLine($"{music.id},{music.name},{music.category},{music.duration}");
+                    return StatusCode(500, $"Internal server error: {ex.Message}");
                 }
-                byte[] csvBytes = Encoding.UTF8.GetBytes(builder.ToString());
-
-                return File(csvBytes, "text/csv", "music_report.csv");
             }
-
-            return BadRequest("Unsupported format");
         }
+
     }
 }

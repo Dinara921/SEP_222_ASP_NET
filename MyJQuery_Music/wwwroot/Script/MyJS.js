@@ -43,7 +43,10 @@ $(document).ready(function () {
                 $(".delete-track").click(function () 
                 {
                     var trackId = $(this).data("trackid");
-                    deleteTrack(trackId);
+                    console.log(trackId);
+                    confirmDel(trackId);
+                    // var trackId = $(this).data("trackid");
+                    // deleteTrack(trackId);
                 });
 
 
@@ -72,7 +75,13 @@ $(document).ready(function () {
 
     $('#saveButton').click(function() 
     {
-        confirmSave();
+        confirmSave(); 
+    });
+
+    $('#closeButton').click(function() 
+    {
+        console.log('close')
+        $('#AddModal').modal('hide');  
     });
 
     $('#cancelSaveButton').click(function() 
@@ -122,9 +131,10 @@ function refreshTrackList()
             $("#Grid_block").append(tableHtml);
 
             $(".delete-track").click(function () 
-            {
-                var trackId = $(this).data("trackid");
-                deleteTrack(trackId);
+            {     
+                confirmDel();
+                // var trackId = $(this).data("trackid");
+                // deleteTrack(trackId);
             }); 
         },
         error: function (xhr, status, error) 
@@ -157,6 +167,11 @@ function confirmSave()
     $('#confirmModal').modal('show');
 }
 
+function confirmDel() 
+{
+    $('#confirmModalDel').modal('show');
+}
+
 function showModal() 
 {
     console.log('show');
@@ -175,12 +190,24 @@ function confirmSave()
         $('#confirmModal').modal('hide');
         $('#AddModal').modal('hide');
         AddOrEditTrack(trackId, trackName, trackCategory, trackDuration);
+        Null()
     });
+}
+
+function confirmDel(trackId) 
+{
+    $('#confirmModal').modal('show').on('click', '#confirmSaveButton', function() 
+    {
+        $('#confirmModal').modal('hide');
+        console.log(trackId);
+        deleteTrack(trackId);
+    });
+    
 }
 
 function AddOrEditTrack(trackId, name, category_id, duration) 
 {
-    var requestData = 
+    requestData = 
     {
         id: trackId,
         name: name,
@@ -203,7 +230,7 @@ function AddOrEditTrack(trackId, name, category_id, duration)
         {
             console.log("Error");
         }
-    });
+    });  
 }
 
 function uploadFile() 
@@ -215,62 +242,15 @@ function uploadFile()
         return;
     }
 
-    var selectedFormat = formatSelect.value;
-    var requestData = 
+    var categorySelect = document.getElementById('category');
+    if (!categorySelect) 
     {
-       format:selectedFormat
-    };
-
-    console.log(requestData)
-
-    if (requestData === "0") 
-    {
-        alert('Пожалуйста, выберите формат файла');
+        console.error('Элемент с идентификатором "category" не найден.');
         return;
     }
 
-    $.ajax({
-        type: "POST",
-        headers: 
-        {
-            'Content-Type': 'application/json'
-        },
-        url: "Music/DownloadFormatMusic",
-        data: JSON.stringify(requestData), 
-        success: function (response) 
-        {
-            var fileName;
-            var fileExtension;
-            if (selectedFormat === "1") {
-                fileName = 'music_report.xlsx';
-                fileExtension = 'xlsx';
-            } else if (selectedFormat === "2") {
-                fileName = 'music_report.csv';
-                fileExtension = 'csv';
-            } else {
-                console.error('Неизвестный формат файла.');
-                return;
-            }
-        
-            // Создаем ссылку для скачивания
-            var downloadLink = document.createElement('a');
-            downloadLink.href = response.downloadUrl; // Предполагается, что сервер возвращает URL для скачивания в поле downloadUrl
-            downloadLink.download = fileName; // Устанавливаем имя файла для скачивания
-            downloadLink.textContent = 'Скачать файл'; // Текст ссылки
-        
-            // Добавляем ссылку на страницу
-            document.body.appendChild(downloadLink);
-        
-            // Эмулируем клик по ссылке для начала скачивания
-            downloadLink.click();
-        
-            // Удаляем ссылку из DOM после завершения скачивания
-            downloadLink.remove();
-        },
-        error: function (xhr, status, error) 
-        {
-            console.error('Произошла ошибка при загрузке файла:', error);
-        }
-    });
-}
+    var selectedFormat = formatSelect.value;
+    var selectedCategory = categorySelect.value;
 
+    window.location.href = "music/DownloadFormatMusic/" + selectedFormat + "/" + selectedCategory;
+}
