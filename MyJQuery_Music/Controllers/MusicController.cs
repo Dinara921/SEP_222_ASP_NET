@@ -14,6 +14,7 @@ namespace MyJQuery_Music.Controllers
     public class MusicController : ControllerBase
     {
         //string conStr = @"Server=DESKTOP-S23LER7;Database=ASP_MusicJQuery;Trusted_Connection=True;TrustServerCertificate=Yes;";
+
         string conStr = @"Server=206-11\SQLEXPRESS;Database=ASP_Music;Trusted_Connection=True;TrustServerCertificate=Yes;";
 
         [HttpGet("GetAllOrCategoryMusic")]

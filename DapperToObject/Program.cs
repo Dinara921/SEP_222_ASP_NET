@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using DapperToObject.Model;
 using Newtonsoft.Json;
+using RestSharp;
 using System.Collections;
 using System.Data.SqlClient;
 
@@ -9,10 +10,17 @@ namespace DapperToObject
     internal class Program
     {
         static string conStr = @"Server=206-11\SQLEXPRESS;Database=TestDB;Integrated Security=True;TrustServerCertificate=Yes";
+
         static void Main(string[] args)
         {
-            test_1("1");
+            //test_1("1");
+
+            var client = new RestClient();
+            var request = new RestRequest("http://localhost:5198/music/GetAllOrCategoryMusic?category=1", Method.Get);
+            RestResponse response = client.Execute(request);
+            Console.WriteLine(response.Content);
         }
+
         static void test_1(string id)
         {
             using (SqlConnection db = new SqlConnection(conStr))

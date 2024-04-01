@@ -31,7 +31,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyWebApi_JWT", "MyWebApi_JW
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyJQuery", "MyJQuery\MyJQuery.csproj", "{9120EDB9-D6BC-4A0D-AA25-EA82C99C1EAE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyJQuery_Music", "MyJQuery_Music\MyJQuery_Music.csproj", "{88EFC27D-1694-4041-8676-F83D49ADF440}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyJQuery_Music", "MyJQuery_Music\MyJQuery_Music.csproj", "{88EFC27D-1694-4041-8676-F83D49ADF440}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
