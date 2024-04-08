@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using RestSharp;
 using System.Collections;
 using System.Data.SqlClient;
+using Service;
 
 namespace DapperToObject
 {
@@ -13,12 +14,21 @@ namespace DapperToObject
 
         static void Main(string[] args)
         {
-            //test_1("1");
+            MyServiceSoapClient.EndpointConfiguration config = MyServiceSoapClient.EndpointConfiguration.MyServiceSoap;
+            MyServiceSoapClient client = new MyServiceSoapClient(config);
+            var res = client.HelloWorldAsync("step");
+            Console.WriteLine(res.Result.Body.HelloWorldResult);
+            Console.ReadLine();
 
-            var client = new RestClient();
-            var request = new RestRequest("http://localhost:5198/music/GetAllOrCategoryMusic?category=1", Method.Get);
-            RestResponse response = client.Execute(request);
-            Console.WriteLine(response.Content);
+            //test_1("1");
+            //test_2("1");
+            //test_3("1");
+            //test_4("1");
+
+            //var client = new RestClient();
+            //var request = new RestRequest("http://localhost:5198/music/GetAllOrCategoryMusic?category=1", Method.Get);
+            //RestResponse response = client.Execute(request);
+            //Console.WriteLine(response.Content);
         }
 
         static void test_1(string id)
