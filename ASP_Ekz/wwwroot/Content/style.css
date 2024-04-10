@@ -1,0 +1,66 @@
+*{
+    margin: 0;
+    padding: 0;
+ }
+
+.Block
+{
+    background-image: url("1.jpg");
+    background-size: 101% auto;
+    width: 100%;
+    height: 100%;
+}
+
+.Container
+{
+    width: 100%;
+    height: auto;    
+    display: flex;
+    padding: 0 6% 0 8%;
+    justify-content: space-between;
+}
+
+.Container_panel
+{
+    width: 100%;
+    padding: 2%;
+    margin: 2%;
+    border: 1px solid black;
+    background: SteelBlue;
+    border-radius: 20px;
+    color: white;
+}
+.id
+{
+    width: 40%;
+}
+button
+{
+    width: 35%;
+    background: #DA70D6;
+    border-radius: 10px; 
+    padding: 1%;
+    border: 1px solid #DA70D6;
+}
+label
+{
+    background: SteelBlue;
+}
+select
+{
+    width: 50%;
+    padding-left: 3%;
+    margin-left: 5%;
+    background: SkyBlue;
+    color: white;
+    padding: 2%;
+    font-size: 1.0em;
+}
+.btn-primary
+{
+    margin-left: 5%;  
+}
+.load
+{
+    margin-left: 30%;
+}
