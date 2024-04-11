@@ -1,0 +1,149 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="Content/jquery-confirm.css" rel="stylesheet" />
+    <link href="Content/style.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+    <script src="Script/jquery-3.4.1.min.js"></script>
+    <script src="Script/bootstrap.min.js"></script>
+    <script src="Script/jquery-confirm.js"></script>
+    <script src="Script/ClJS.js"></script>
+    <style>
+        div#Grid_block {
+            background-color: #ffffff !important;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 1Блок -->
+    <div class="Block" id="Block">
+        <div class="Container" id="Container">
+            <div class="Container_panel" id="Container_search">
+                <label for="category" class="labelCategory">Поиск клиентов</label>
+                <br>
+                <input class="form-control form-control-lg" id="tb_search" type="text" placeholder="Введите ФИО"><br>
+                <button type="button" class="btn btn-primary" id="search">Поиск</button>
+            </div>
+
+            <!-- 2Блок -->
+            <div class="Container_panel" id="Container_add">
+                <label for="add" class="labelAdd">Добавить клиента</label><br>
+                <button type="button" class="btn btn-primary" id="add">Добавить</button>
+            </div>
+        </div>
+
+        <!-- Грид -->
+        <div class="container-fluid" id="Grid_block">
+
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="AddModal" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Client</h4>
+                    </div>
+                    <div class="modal-body" style="padding:40px 50px;">
+                        <div class="form-group">
+                            <label for="trainerId">Id</label>
+                            <input type="text" class="form-control" id="trainerId">
+                        </div>
+                        <div class="form-group">
+                            <label for="trainerFio">ФИО:</label>
+                            <input type="text" class="form-control" id="trainerFio" />
+                        </div>
+                        <div class="form-group">
+                            <label for="trainerDateBirth">Дата рождения:</label>
+                            <input type="date" class="form-control" id="trainerDateBirth" />
+                        </div>
+                        <div class="form-group">
+                            <label for="trainerNumber">Номер телефона:</label>
+                            <input type="text" class="form-control" id="trainerNumber" />
+                        </div>
+                        <div class="form-group">
+                            <label for="trainerGender">Пол:</label>
+                            <select id="trainerGender" class="form-control">
+                                <option value="0" selected>Выберите пол</option>
+                                <option value="male">Мужской</option>
+                                <option value="female">Женский</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="trainerEmail">Email</label>
+                            <input type="email" class="form-control" id="trainerEmail" placeholder="Введите e-mail">
+                        </div>
+                        <div class="form-group">
+                            <label for="trainerPwd">Пароль</label>
+                            <input type="password" class="form-control" id="trainerPwd" placeholder="Введите пароль">
+                        </div>
+                        <div class="form-group">
+                            <label for="trainerRole_id">User_role</label>
+                            <select id="trainerRole_id" class="form-control">
+                                <option value="0" selected>Выберите роль</option>
+                                <option value="1">Клиент</option>
+                                <option value="2">Админ</option>
+                                <option value="3">Тренер</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-success btn-block" id="saveButton">Сохранить</button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal"
+                            id="closeButton">Закрыть</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- модуль ошибки -->
+
+    <div id="error-message" class="alert alert-danger" style="display: none;"></div>
+    <!-- confirm-ы -->
+    <div class="modal fade" id="confirmModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Подтверждение сохранения</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Вы уверены, что хотите сохранить пользователя?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" id="confirmSaveButton">Да</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Нет</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="confirmModalDel" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Подтверждение удаления</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Вы уверены, что хотите удалить пользователя?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" id="confirmSaveButton">Да</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Нет</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+
+</html>

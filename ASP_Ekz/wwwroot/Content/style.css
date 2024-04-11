@@ -18,6 +18,7 @@
     display: flex;
     padding: 0 6% 0 8%;
     justify-content: space-between;
+    text-align: center;
 }
 
 .Container_panel
@@ -42,7 +43,13 @@ button
     padding: 1%;
     border: 1px solid #DA70D6;
 }
-label
+
+.labelAdd
+{
+    margin: 10% 0 3% 0;
+    background: SteelBlue;
+}
+.labelCategory
 {
     background: SteelBlue;
 }
@@ -50,7 +57,7 @@ select
 {
     width: 50%;
     padding-left: 3%;
-    margin-left: 5%;
+    margin: 5% 5% 0 7%;
     background: SkyBlue;
     color: white;
     padding: 2%;
@@ -60,7 +67,7 @@ select
 {
     margin-left: 5%;  
 }
-.load
+.Anceta
 {
-    margin-left: 30%;
+    margin-top: 10%;
 }

@@ -1,218 +1,227 @@
-$(document).ready(function () {       
-    $("#category").change(function () 
-    {                   
+$(document).ready(function () {
+    $("#category1, #category2").change(function () {      
+        console.log($(this).val()); 
         var category = $(this).val();
+        refreshTrainingList();
         $.ajax({
             type: "GET",
-            url: "Music/GetAllOrCategoryMusic",
-            data: { category: category },
-            success: function (data) 
-            { 
-                $("#Grid_block").empty(); 
+            url: "Gym/GetAllOrTrainerIdOrHallId",
+            data: { hallOrTrId: category },
+            success: function (data) {
+                $("#Grid_block").empty();
 
                 var tableHtml = '<table class="table table-bordered table-light">' +
-                                    '<thead class="thead-dark">' +
-                                        '<tr>' +
-                                            '<th>ID</th>' +
-                                            '<th>Название</th>' +
-                                            '<th>Категория</th>' +
-                                            '<th>Длительность</th>' +
-                                            '<th>Действия</th>' +
-                                        '</tr>' +
-                                    '</thead>' +
-                                    '<tbody>';
-                
-                $.each(data, function(index, track) 
-                {
+                    '<thead class="thead-dark">' +
+                    '<tr>' +
+                    '<th>ID</th>' +
+                    '<th>Тренер</th>' +
+                    '<th>Зал</th>' +
+                    '<th>Вид тренировок</th>'+
+                    '<th>Время тренировки</th>' +
+                    '<th>Статус занятий</th>' +
+                    '<th>Количество в группе</th>' +
+                    '</tr>' +
+                    '</thead>' +
+                    '<tbody>';
+
+                $.each(data, function (index, training) {
                     tableHtml += '<tr>' +
-                                    '<td>' + track.id + '</td>' +
-                                    '<td>' + track.name + '</td>' +
-                                    '<td>' + track.category + '</td>' +
-                                    '<td>' + track.duration + '</td>' +
-                                    '<td>' +
-                                        '<button class="btn btn-primary edit-track" data-trackid="' + track.id + '"><i class="fas fa-pencil-alt"></i></button>' +
-                                        '<button class="btn btn-danger delete-track" data-trackid="' + track.id + '"><i class="fas fa-trash"></i></button>' +
-                                    '</td>' +
-                                '</tr>';
+                        '<td>' + training.id + '</td>' +
+                        '<td>' + training.trainer + '</td>' +
+                        '<td>' + training.hall + '</td>' +
+                        '<td>' + training.special + '</td>' +
+                        '<td>' + training.time + '</td>' +
+                        '<td>' + training.status + '</td>' +
+                        '<td>' + training.quantity + '</td>' +
+                        '<td>' +
+                        '<div class="btn-group">' +
+                        '<button class="btn btn-primary edit-training" data-trainingId="' + training.id + '"><i class="fas fa-pencil-alt"></i></button>' +
+                        '<button class="btn btn-danger delete-training" data-trainingId="' + training.id + '"><i class="fas fa-trash"></i></button>' +
+                        '<button class="btn btn-success register-training" data-trainingId="' + training.id + '"><i class="fas fa-plus"></i></button>' +
+                        '</div>' +
+                        '</td>' +
+                        '</tr>';
                 });
 
                 tableHtml += '</tbody></table>';
 
                 $("#Grid_block").append(tableHtml);
 
-                $(".delete-track").click(function () 
-                {
-                    var trackId = $(this).data("trackid");
-                    console.log(trackId);
-                    confirmDel(trackId);
-                    // var trackId = $(this).data("trackid");
-                    // deleteTrack(trackId);
+                $(".delete-training").click(function () {
+                    var trainingId = $(this).data("trainingId");
+                    confirmDel(trainingId);
                 });
 
+                $(".register-training").click(function () 
+                {
+                    var $row = $(this).closest("tr");
+                    var trainingId = $row.find("td:eq(0)").text();
+                    $('#training_id').val(trainingId)
+                    $('#registerModal').modal('show'); 
+                });
 
-                $(".edit-track").click(function ()  
-                { 
-                    var trackId = $(this).data("trackid");
-                    var trackName = $(this).closest("tr").find("td:nth-child(2)").text(); 
-                    var trackCategory = $(this).closest("tr").find("td:nth-child(3)").text(); 
-                    var trackDuration = $(this).closest("tr").find("td:nth-child(4)").text(); 
-                    
-                    $("#trackId").val(trackId);
-                    $("#trackName").val(trackName);
-                    $("#trackCategory").val(trackCategory);
-                    $("#trackDuration").val(trackDuration);
-                    showModal();
-                    AddOrEditTrack(trackId, trackName, trackCategory, trackDuration); 
+                $(".edit-training").click(function () {
+                    var $row = $(this).closest("tr");
+                    var trainingId = $row.find("td:eq(0)").text();
+                    var trainingTrainer = $row.find("td:eq(1)").text();
+                    var trainingTime = $row.find("td:eq(3)").text();
+                    var trainingHall = $row.find("td:eq(2)").text();
+                    var trainingStatus = $row.find("td:eq(4)").text();
+                    var trainingQuantity = $row.find("td:eq(5)").text();
+
+                    console.log("ID тренировки:", trainingId);
+                    console.log("Тренер:", trainingTrainer);
+                    console.log("Время тренировки:", trainingTime);
+                    console.log("Статус:", trainingStatus);
+                    console.log("Зал:", trainingHall);
+                    console.log("Количество в группе:", trainingQuantity);
+
+                    $("#trainingTrainer").val(trainingTrainer);
+                    $("#trainingTime").val(trainingTime);
+
+                    $('#AddModal').modal('show'); 
+
+                    $("#trainingId").val(trainingId);
+                    $("#trainingStatus").val(trainingStatus);
+                    $("#trainingHall").val(trainingHall);
+                    $("#trainingQuantity").val(trainingQuantity);
                 });
             }
         });
     });
-     
+
     $("#add").click(function () 
     {
         showModal();
     });
 
-    $('#saveButton').click(function() 
+    $('#saveButton').click(function () 
     {
-        confirmSave(); 
+        confirmSave();
     });
 
-    $('#closeButton').click(function() 
-    {
+    $('#closeButton').click(function () {
         console.log('close')
-        $('#AddModal').modal('hide');  
+        $('#AddModal').modal('hide');
     });
 
-    $('#cancelSaveButton').click(function() 
-    {
+    $('#cancelSaveButton').click(function () {
         $('#confirmModal').modal('hide');
     });
 
-    $("#your-button-id").click(function () 
-    {
-        uploadFile(); 
-    });
 });
 
-function refreshTrackList() 
-{
+function refreshTrainingList() {
     $.ajax({
         type: "GET",
-        url: "Music/GetAllOrCategoryMusic",
-        data: { category: $("#category").val() },
+        url: "Gym/GetAllOrTrainerIdOrHallId",
+        data: { hallOrTrId: $(".category").val() },
         success: function (data) {
-            $("#Grid_block").empty(); 
+            $("#Grid_block").empty();
+
             var tableHtml = '<table class="table table-bordered table-light">' +
-                                '<thead class="thead-dark">' +
-                                    '<tr>' +
-                                        '<th>ID</th>' +
-                                        '<th>Название</th>' +
-                                        '<th>Категория</th>' +
-                                        '<th>Длительность</th>' +
-                                        '<th>Действия</th>' +
-                                    '</tr>' +
-                                '</thead>' +
-                                '<tbody>';
-            $.each(data, function(index, track) 
-            {
+                '<thead class="thead-dark">' +
+                '<tr>' +
+                '<th>ID</th>' +
+                '<th>Тренер</th>' +
+                '<th>Зал</th>' +
+                '<th>Время тренировки</th>' +
+                '<th>Статус занятий</th>' +
+                '<th>Количество в группе</th>' +
+                '</tr>' +
+                '</thead>' +
+                '<tbody>';
+
+            $.each(data, function (index, training) {
                 tableHtml += '<tr>' +
-                                '<td>' + track.id + '</td>' +
-                                '<td>' + track.name + '</td>' +
-                                '<td>' + track.category + '</td>' +
-                                '<td>' + track.duration + '</td>' +
-                                '<td>' +
-                                    '<button class="btn btn-primary edit-track" data-trackid="' + track.id + '"><i class="fas fa-pencil-alt"></i></button>' +
-                                    '<button class="btn btn-danger delete-track" data-trackid="' + track.id + '"><i class="fas fa-trash"></i></button>' +
-                                '</td>' +
-                            '</tr>';
+                    '<td>' + training.id + '</td>' +
+                    '<td>' + training.trainer + '</td>' +
+                    '<td>' + training.hall + '</td>' +
+                    '<td>' + training.time + '</td>' +
+                    '<td>' + training.status + '</td>' +
+                    '<td>' + training.quantity + '</td>' +
+                    '<td>' +
+                    '<button class="btn btn-primary edit-training" data-trainingId="' + training.id + '"><i class="fas fa-pencil-alt"></i></button>' +
+                    '<button class="btn btn-danger delete-training" data-trainingId="' + training.id + '"><i class="fas fa-trash"></i></button>' +
+                    '</td>' +
+                    '</tr>';
             });
+
             tableHtml += '</tbody></table>';
+
             $("#Grid_block").append(tableHtml);
 
-            $(".delete-track").click(function () 
-            {     
-                confirmDel();
-                // var trackId = $(this).data("trackid");
-                // deleteTrack(trackId);
-            }); 
+            $(".delete-training").click(function () {
+                var trainingId = $(this).data("trainingId");
+                confirmDel(trainingId);
+            });
         },
-        error: function (xhr, status, error) 
-        {
+        error: function (xhr, status, error) {
             console.log("Error");
         }
     });
 }
 
-function deleteTrack(trackId) 
+function deleteTraining(trainingId) 
 {
     $.ajax({
         type: "GET",
-        url: "Music/DeleteMusic",
-        data: { id: trackId },
+        url:"Gym/DeleteTraining",
+        data: { training_id: trainingId }, 
         success: function (response) 
         {
-            refreshTrackList();
+            refreshTrainingList();
         },
         error: function (xhr, status, error) 
         {
             console.log("Error");
-        }
+        } 
     });
-    
 }
 
-function confirmSave() 
-{
+function confirmSave() {
     $('#confirmModal').modal('show');
 }
 
-function confirmDel() 
-{
-    $('#confirmModalDel').modal('show');
+function confirmDel(trainingId) {
+    console.log(trainingId);
+    $('#confirmModalDel').modal('show').on('click', '#confirmSaveButton', function () {
+        $('#confirmModalDel').modal('hide');
+        $('#AddModal').modal('hide');
+        deleteTraining(trainingId);
+    });
 }
 
-function showModal() 
-{
+function showModal() {
     console.log('show');
-    $("#AddModal").modal("show");    
+    $("#AddModal").modal("show");
 }
 
-function confirmSave() 
-{
-    var trackId = $('#trackId').val();
-    var trackName = $('#trackName').val();
-    var trackCategory = $('#trackCategory').val();
-    var trackDuration = $('#trackDuration').val();
+function confirmSave() {
+    var trainingId = $('#trainingId').val()
+    var trainingTrainer = $('#trainingTrainer').val()
+    var trainingTime = $('#trainingTime').val()
+    var trainingStatus = $('#trainingStatus').val()
+    var trainingHall = $('#trainingHall').val()
+    var trainingQuantity = $('#trainingQuantity').val()
 
-    $('#confirmModal').modal('show').on('click', '#confirmSaveButton', function() 
-    {
+    $('#confirmModal').modal('show').on('click', '#confirmSaveButton', function () {
         $('#confirmModal').modal('hide');
         $('#AddModal').modal('hide');
-        AddOrEditTrack(trackId, trackName, trackCategory, trackDuration);
-        Null()
+        AddOrEditTraining(trainingId, trainingTrainer, trainingTime, trainingStatus, trainingHall, trainingQuantity);
     });
 }
 
-function confirmDel(trackId) 
-{
-    $('#confirmModal').modal('show').on('click', '#confirmSaveButton', function() 
+function AddOrEditTraining(trainingId, trainingTrainer, trainingTime, trainingStatus, trainingHall, trainingQuantity) {
+    refreshTrainingList()
+    requestData =
     {
-        $('#confirmModal').modal('hide');
-        console.log(trackId);
-        deleteTrack(trackId);
-    });
-    
-}
-
-function AddOrEditTrack(trackId, name, category_id, duration) 
-{
-    requestData = 
-    {
-        id: trackId,
-        name: name,
-        category_id: category_id,
-        duration: duration
+        id: trainingId,
+        trainer_id: trainingTrainer,
+        timeT_id: trainingTime,
+        status_id: trainingStatus,
+        hall_id: trainingHall,
+        max_capacity: trainingQuantity
     };
 
     $.ajax({
@@ -220,37 +229,104 @@ function AddOrEditTrack(trackId, name, category_id, duration)
         headers: {
             'Content-Type': 'application/json'
         },
-        url: "Music/AddOrEditMusic",
+        url: "Gym/AddOrUpdateTraining",
         data: JSON.stringify(requestData),
         success: function (response) 
         {
-            refreshTrackList();
+            if (response.result === 0) 
+            {
+                alert("Тренировка успешно добавлена или обновлена");
+            } else if (response.result === -1) 
+            {
+                alert("Этот временной интервал уже занят для тренировки");
+            } else if (response.result === -2) 
+            {
+                alert("Тренер недоступен в указанное время");
+            } else if (response.result === -3) 
+            {
+                alert("Произошла ошибка при обработке вашего запроса");
+            } else {
+                alert("Произошла неизвестная ошибка");
+            }
         },
-        error: function (xhr, status, error) 
-        {
+        error: function (xhr, status, error) {
             console.log("Error");
+            var errorMessage = "Произошла ошибка при обработке запроса.";
+            if (xhr.status === 400) {
+                errorMessage = xhr.responseText;
+            } else if (xhr.status === 500) {
+                errorMessage = "Произошла внутренняя ошибка сервера.";
+            }
+            $("#error-message").text(errorMessage).show();
         }
-    });  
+    });
 }
 
-function uploadFile() 
+$(document).ready(function () 
 {
-    var formatSelect = document.getElementById('format-select');
-    if (!formatSelect) 
+    $("#trainerButton").click(function () 
     {
-        console.error('Элемент с идентификатором "format-select" не найден.');
-        return;
-    }
+        window.location.href = "trainerInf.html";
+    });
 
-    var categorySelect = document.getElementById('category');
-    if (!categorySelect) 
+    $("#clientButton").click(function () 
     {
-        console.error('Элемент с идентификатором "category" не найден.');
-        return;
-    }
+        window.location.href = "clientInf.html";
+    });
+})
 
-    var selectedFormat = formatSelect.value;
-    var selectedCategory = categorySelect.value;
+$(document).ready(function () 
+{
 
-    window.location.href = "music/DownloadFormatMusic/" + selectedFormat + "/" + selectedCategory;
-}
+    $("#RegisterModalBtn").click(function () 
+    {
+        $("#RegisterModal").show();
+    });
+
+    $(".close").click(function () 
+    {
+        $("#RegisterModal").hide();
+    });
+
+    $(".closeBtn").click(function () 
+    {
+        $("#RegisterModal").hide();
+    });
+
+    $("#saveBtn").click(function () 
+    {
+        var client_id = $("#client_id").val();
+        var training_id = $("#training_id").val();
+
+        if (confirm("Вы уверены, что хотите записаться на тренировку?")) {
+            $.ajax({
+                type: "GET",
+                url: "Gym/TrainingAttendance",
+                data: {
+                    client_id: client_id,
+                    training_id: training_id
+                },
+                success: function (response) {
+                    if (response.result === 0) {
+                        alert("Вы успешно записались на тренировку!");
+                    } else if (response.result === -1) {
+                        alert("Ошибка: тренировка не существует!");
+                    } else if (response.result === -2) {
+                        alert("Ошибка: все места на тренировке заняты!");
+                    } else if (response.result === -3) {
+                        alert("Ошибка: места на тренировке ограничены и уже заняты!");
+                    } else if (response.result === -4) {
+                        alert("Ошибка при обработке запроса!");
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log("Ошибка:", error);
+                }
+            });
+        }
+    });
+});
+
+
+
+

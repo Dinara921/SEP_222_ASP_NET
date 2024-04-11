@@ -20,33 +20,42 @@
     </style>
 </head>
 <body>
+    <!-- 1Блок -->
     <div class="Block" id="Block">
         <div class="Container" id="Container">
             <div class="Container_panel" id="Container_search">
-                <label for="category">Поиск</label>
-                <select name="form-select" class="category" id="category">
-                    <option value="0" selected>Все категории</option>
-                    <option value="1">Jaz</option>
-                    <option value="2">Pop</option>
-                    <option value="3">Rock</option>
-                    <option value="4">Classic</option>
+                <label for="category" class="labelCategory">Поиск занятий</label>
+                <br>
+                <select name="form-select" class="category" id="category1">
+                    <option value="0" selected>Все залы</option>
+                    <option value="1">1 Зал</option>
+                    <option value="2">2 Зал</option>
+                    <option value="3">3 Зал</option>
+                </select>
+                
+                <select name="form-select" class="category" id="category2">
+                    <option value="0" selected>Все тренера</option>
+                    <option value="1">Михайлова Мария</option>
+                    <option value="2">Оспанова Дания</option>
+                    <option value="3">Муратов Айбек</option>
                 </select>
             </div>
+
+            <!-- 2Блок -->
             <div class="Container_panel" id="Container_add">
-                <label for="add">Добавить музыку</label>
+                <label for="add" class="labelAdd">Добавить тренировку</label><br>
                 <button type="button" class="btn btn-primary" id="add">Добавить</button>
             </div>
-            <div class="Container_panel" id="Container_download">
-                <label class="load" for="format-select">Загрузить файл</label><br>
-                <select name="form-select" class="category" id="format-select">
-                    <option value="0" selected>Выберите формат</option>
-                    <option value="1">XLXS</option>
-                    <option value="2">CSV</option>
-                </select>
-                <button type="button" class="btn btn-primary" onclick="uploadFile()">Загрузить</button>
+
+            <!-- 3Блок -->
+            <div class="Container_panel" id="Container_Inf">
+                <label class="Anceta" for="format-select">Тренера:</label>
+                <button type="button" id = "trainerButton" class="btn btn-primary">Тренера</button><br>
+                <label class="Anceta" for="format-select">Клиенты:</label>
+                <button type="button" id = "clientButton" class="btn btn-primary">Клиенты</button>
             </div>
         </div>
-
+        <!-- Грид -->
         <div class="container-fluid" id="Grid_block">
 
         </div>
@@ -57,29 +66,58 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Tracks</h4>
+                        <h4 class="modal-title">Training</h4>
                     </div>
                     <div class="modal-body" style="padding:40px 50px;">
                         <div class="form-group">
-                            <label for="trackId">Id</label>
-                            <input type="text" class="form-control" id="trackId">
+                            <label for="trainingId">Id</label>
+                            <input type="text" class="form-control" id="trainingId">
                         </div>
                         <div class="form-group">
-                            <label for="trackName">Наименование</label>
-                            <input type="text" class="form-control" id="trackName">
-                        </div>
-                        <div class="form-group">
-                            <label for="trackCategory">Категория</label>
-                            <select id="trackCategory" class="form-control">
-                                <option value="1">Jaz</option>
-                                <option value="2">Pop</option>
-                                <option value="3">Rock</option>
-                                <option value="4">Classic</option>
+                            <label for="trainingTrainer">Тренер</label>
+                            <select id="trainingTrainer" class="form-control">
+                                <option value="0" selected>Выберите тренера</option>
+                                <option value="1">Михайлова Мария</option>
+                                <option value="2">Оспанова Дания</option>
+                                <option value="3">Муратов Айбек</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="trackDuration">Длительность</label>
-                            <input type="text" class="form-control" id="trackDuration" placeholder="Введите длительность">
+                            <label for="trainingTime">Время тренировки</label>
+                            <select id="trainingTime" class="form-control">
+                                <option value="0" selected>Выберите время</option>
+                                <option value="1">10:00</option>
+                                <option value="2">11:00</option>
+                                <option value="3">12:00</option>
+                                <option value="3">13:00</option>
+                                <option value="3">14:00</option>
+                                <option value="3">15:00</option>
+                                <option value="3">16:00</option>
+                                <option value="3">17:00</option>
+                                <option value="3">18:00</option>
+                                <option value="3">19:00</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                        <label for="trainingStatus">Тип занятий</label>
+                        <select id="trainingStatus" class="form-control">
+                            <option value="0" selected>Выберите тип занятий</option>
+                            <option value="1">Индивидуальные</option>
+                            <option value="2">Групповые</option>
+                        </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="trainingHall">Зал</label>
+                            <select id="trainingHall" class="form-control">
+                                <option value="0" selected>Выберите зал</option>
+                                <option value="1">1 зал</option>
+                                <option value="2">2 зал</option>
+                                <option value="3">3 зал</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="trainingQuantity">Количество человек в группе</label>
+                            <input type="text" class="form-control" id="trainingQuantity" placeholder="Введите количество людей">
                         </div>
                         <button type="submit" class="btn btn-success btn-block" id="saveButton">Сохранить</button>
                     </div>
@@ -90,6 +128,11 @@
             </div>
         </div>
     </div>
+
+    <!-- модуль ошибки -->
+
+    <div id="error-message" class="alert alert-danger" style="display: none;"></div>
+    <!-- confirm-ы -->
     <div class="modal fade" id="confirmModal" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -98,7 +141,7 @@
                     <h4 class="modal-title">Подтверждение сохранения</h4>
                 </div>
                 <div class="modal-body">
-                    <p>Вы уверены, что хотите сохранить трек?</p>
+                    <p>Вы уверены, что хотите сохранить тренировку?</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-success" id="confirmSaveButton">Да</button>
@@ -115,7 +158,7 @@
                     <h4 class="modal-title">Подтверждение удаления</h4>
                 </div>
                 <div class="modal-body">
-                    <p>Вы уверены, что хотите удалить трек?</p>
+                    <p>Вы уверены, что хотите удалить тренировку?</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-success" id="confirmSaveButton">Да</button>
@@ -124,6 +167,35 @@
             </div>
         </div>
     </div>
+    <div id="registerModal" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Запись на тренировку</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="client_id">ID клиента:</label>
+                            <input type="text" class="form-control" id="client_id" placeholder="Введите ID клиента">
+                        </div>
+                        <div class="form-group">
+                            <label for="training_id">ID тренировки:</label>
+                            <input type="text" class="form-control" id="training_id" placeholder="Введите ID тренировки">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                    <button id="saveBtn" type="button" class="btn btn-primary">Сохранить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     </div>
 </body>
 </html>
