@@ -26,7 +26,8 @@ $(document).ready(function ()
                     '</thead>' +
                     '<tbody>';
 
-                $.each(data, function (index, training) {
+                $.each(data, function (index, training) 
+                {
                     tableHtml += '<tr>' +
                         '<td>' + training.id + '</td>' +
                         '<td>' + training.trainer + '</td>' +
@@ -67,27 +68,27 @@ $(document).ready(function ()
                     var $row = $(this).closest("tr");
                     var trainingId = $row.find("td:eq(0)").text();
                     var trainingTrainer = $row.find("td:eq(1)").text();
-                    var trainingTime = $row.find("td:eq(3)").text();
-                    var trainingHall = $row.find("td:eq(2)").text();
-                    var trainingStatus = $row.find("td:eq(4)").text();
-                    var trainingQuantity = $row.find("td:eq(5)").text();
+                    var trainingTime = $row.find("td:eq(4)").text();
+                    var trainingHall = $row.find("td:eq(6)").text();
+                    var trainingStatus = $row.find("td:eq(3)").text();
+                    var trainingQuantity = $row.find("td:eq(2)").text();
 
                     console.log("ID тренировки:", trainingId);
                     console.log("Тренер:", trainingTrainer);
-                    console.log("Время тренировки:", trainingTime);
-                    console.log("Статус:", trainingStatus);
+                    console.log("Время :", trainingTime);
+                    console.log("Тип тренировки:", trainingStatus);
                     console.log("Зал:", trainingHall);
                     console.log("Количество в группе:", trainingQuantity);
 
+                    $("#trainingId").val(trainingId);
                     $("#trainingTrainer").val(trainingTrainer);
                     $("#trainingTime").val(trainingTime);
-
-                    $('#AddModal').modal('show'); 
-
-                    $("#trainingId").val(trainingId);
                     $("#trainingStatus").val(trainingStatus);
                     $("#trainingHall").val(trainingHall);
                     $("#trainingQuantity").val(trainingQuantity);
+                    $('#AddModal').modal('show');
+
+                    
                 });
             }
         });
