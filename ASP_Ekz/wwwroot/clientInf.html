@@ -1,5 +1,10 @@
 ﻿<!DOCTYPE html>
 <html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head><!DOCTYPE html>
+<html>
 
 <head>
     <meta charset="utf-8" />
@@ -13,7 +18,7 @@
     <script src="Script/jquery-3.4.1.min.js"></script>
     <script src="Script/bootstrap.min.js"></script>
     <script src="Script/jquery-confirm.js"></script>
-    <script src="Script/ClJS.js"></script>
+    <script src="Script/TrJS.js"></script>
     <style>
         div#Grid_block {
             background-color: #ffffff !important;
@@ -26,19 +31,37 @@
     <div class="Block" id="Block">
         <div class="Container" id="Container">
             <div class="Container_panel" id="Container_search">
-                <label for="category" class="labelCategory">Поиск клиентов</label>
+                <label for="category" class="labelCategory">Поиск занятий</label>
                 <br>
-                <input class="form-control form-control-lg" id="tb_search" type="text" placeholder="Введите ФИО"><br>
-                <button type="button" class="btn btn-primary" id="search">Поиск</button>
+                <select name="form-select" class="category" id="category1">
+                    <option value="0" selected>Все залы</option>
+                    <option value="1">1 Зал</option>
+                    <option value="2">2 Зал</option>
+                    <option value="3">3 Зал</option>
+                </select>
+
+                <select name="form-select" class="category" id="category2">
+                    <option value="0" selected>Все тренера</option>
+                    <option value="1">Михайлова Мария</option>
+                    <option value="2">Оспанова Дания</option>
+                    <option value="3">Муратов Айбек</option>
+                </select>
             </div>
 
             <!-- 2Блок -->
             <div class="Container_panel" id="Container_add">
-                <label for="add" class="labelAdd">Добавить клиента</label><br>
+                <label for="add" class="labelAdd">Добавить тренировку</label><br>
                 <button type="button" class="btn btn-primary" id="add">Добавить</button>
             </div>
-        </div>
 
+            <!-- 3Блок -->
+            <div class="Container_panel" id="Container_download">
+                <label class="Anceta" for="format-select">Тренера:</label>
+                <button type="buttonTrainer" class="btn btn-primary" onclick="uploadTrainer()">Тренера</button><br>
+                <label class="Anceta" for="format-select">Клиенты:</label>
+                <button type="buttonClient" class="btn btn-primary" onclick="uploadClinet">Клиенты</button>
+            </div>
+        </div>
         <!-- Грид -->
         <div class="container-fluid" id="Grid_block">
 
@@ -50,49 +73,59 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Client</h4>
+                        <h4 class="modal-title">Training</h4>
                     </div>
                     <div class="modal-body" style="padding:40px 50px;">
                         <div class="form-group">
-                            <label for="trainerId">Id</label>
-                            <input type="text" class="form-control" id="trainerId">
+                            <label for="trainingId">Id</label>
+                            <input type="text" class="form-control" id="trainingId">
                         </div>
                         <div class="form-group">
-                            <label for="trainerFio">ФИО:</label>
-                            <input type="text" class="form-control" id="trainerFio" />
-                        </div>
-                        <div class="form-group">
-                            <label for="trainerDateBirth">Дата рождения:</label>
-                            <input type="date" class="form-control" id="trainerDateBirth" />
-                        </div>
-                        <div class="form-group">
-                            <label for="trainerNumber">Номер телефона:</label>
-                            <input type="text" class="form-control" id="trainerNumber" />
-                        </div>
-                        <div class="form-group">
-                            <label for="trainerGender">Пол:</label>
-                            <select id="trainerGender" class="form-control">
-                                <option value="0" selected>Выберите пол</option>
-                                <option value="male">Мужской</option>
-                                <option value="female">Женский</option>
+                            <label for="trainingTrainer">Тренер</label>
+                            <select id="trainingTrainer" class="form-control">
+                                <option value="0" selected>Выберите тренера</option>
+                                <option value="1">Михайлова Мария</option>
+                                <option value="2">Оспанова Дания</option>
+                                <option value="3">Муратов Айбек</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="trainerEmail">Email</label>
-                            <input type="email" class="form-control" id="trainerEmail" placeholder="Введите e-mail">
-                        </div>
-                        <div class="form-group">
-                            <label for="trainerPwd">Пароль</label>
-                            <input type="password" class="form-control" id="trainerPwd" placeholder="Введите пароль">
-                        </div>
-                        <div class="form-group">
-                            <label for="trainerRole_id">User_role</label>
-                            <select id="trainerRole_id" class="form-control">
-                                <option value="0" selected>Выберите роль</option>
-                                <option value="1">Клиент</option>
-                                <option value="2">Админ</option>
-                                <option value="3">Тренер</option>
+                            <label for="trainingTime">Время тренировки</label>
+                            <select id="trainingTime" class="form-control">
+                                <option value="0" selected>Выберите время</option>
+                                <option value="1">10:00</option>
+                                <option value="2">11:00</option>
+                                <option value="3">12:00</option>
+                                <option value="3">13:00</option>
+                                <option value="3">14:00</option>
+                                <option value="3">15:00</option>
+                                <option value="3">16:00</option>
+                                <option value="3">17:00</option>
+                                <option value="3">18:00</option>
+                                <option value="3">19:00</option>
                             </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="trainingStatus">Тип занятий</label>
+                            <select id="trainingStatus" class="form-control">
+                                <option value="0" selected>Выберите тип занятий</option>
+                                <option value="1">Индивидуальные</option>
+                                <option value="2">Групповые</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="trainingHall">Зал</label>
+                            <select id="trainingHall" class="form-control">
+                                <option value="0" selected>Выберите зал</option>
+                                <option value="1">1 зал</option>
+                                <option value="2">2 зал</option>
+                                <option value="3">3 зал</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="trainingQuantity">Количество человек в группе</label>
+                            <input type="text" class="form-control" id="trainingQuantity"
+                                placeholder="Введите количество людей">
                         </div>
                         <button type="submit" class="btn btn-success btn-block" id="saveButton">Сохранить</button>
                     </div>
@@ -117,7 +150,7 @@
                     <h4 class="modal-title">Подтверждение сохранения</h4>
                 </div>
                 <div class="modal-body">
-                    <p>Вы уверены, что хотите сохранить пользователя?</p>
+                    <p>Вы уверены, что хотите сохранить трек?</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-success" id="confirmSaveButton">Да</button>
@@ -134,7 +167,7 @@
                     <h4 class="modal-title">Подтверждение удаления</h4>
                 </div>
                 <div class="modal-body">
-                    <p>Вы уверены, что хотите удалить пользователя?</p>
+                    <p>Вы уверены, что хотите удалить трек?</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-success" id="confirmSaveButton">Да</button>
@@ -146,4 +179,8 @@
     </div>
 </body>
 
+</html>
+<body>
+
+</body>
 </html>

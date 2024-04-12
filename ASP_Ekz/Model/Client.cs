@@ -9,8 +9,6 @@
         public string email { get; set; }
         public string gender { get; set; }
         public string category { get; set; }
-        public string special { get; set; }
-        public string time { get; set; }
     }
 
     public class Client2

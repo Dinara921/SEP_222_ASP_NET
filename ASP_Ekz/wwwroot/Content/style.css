@@ -71,3 +71,16 @@ select
 {
     margin-top: 10%;
 }
+
+#myModal .modal-dialog 
+{
+    max-width: 90%;
+    width: auto;
+}
+
+#myModal .modal-content 
+{
+    height: auto;
+    max-height: 90vh;
+    overflow-y: auto;
+}

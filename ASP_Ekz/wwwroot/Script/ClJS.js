@@ -25,8 +25,6 @@ $(document).ready(function () {
                     '<th>Номер</th>' +
                     '<th>E-mail</th>' +
                     '<th>Пол</th>' +
-                    '<th>Тип тренировки</th>' +
-                    '<th>Время</th>' +
                     '</tr>' +
                     '</thead>' +
                     '<tbody>';
@@ -39,8 +37,6 @@ $(document).ready(function () {
                         '<td>' + trainer.number + '</td>' +
                         '<td>' + trainer.email + '</td>' +
                         '<td>' + trainer.gender + '</td>' +
-                        '<td>' + trainer.special + '</td>' +
-                        '<td>' + trainer.time + '</td>' +
                         '<td>' +
                         '<button class="btn btn-primary edit-trainer" data-trainerId="' + trainer.id + '"><i class="fas fa-pencil-alt"></i></button>' +
                         '<button class="btn btn-danger delete-trainer" data-trainerId="' + trainer.id + '"><i class="fas fa-trash"></i></button>' +
@@ -65,14 +61,12 @@ $(document).ready(function () {
                     var trainerDateBirth = $row.find("td:eq(2)").text();
                     var trainerNumber = $row.find("td:eq(3)").text();
                     var trainerEmail = $row.find("td:eq(4)").text();
-                    var trainerSpecial = $row.find("td:eq(7) select").val();
 
                     $("#trainerId").val(trainerId);
                     $("#trainerFio").val(trainerFio);
                     $("#trainerDateBirth").val(trainerDateBirth);
                     $("#trainerNumber").val(trainerNumber);
                     $("#trainerEmail").val(trainerEmail);
-                    $("#trainerSpecial").val(trainerSpecial);
 
                     $("#AddModal").modal("show");
                 });
@@ -118,7 +112,8 @@ $(document).ready(function () {
         $('#confirmModal').modal('show');
     }
 
-    function AddOrEditTraining(trainerId, trainerFio, trainerDateBirth, trainerNumber, trainerGender, trainerCategory, trainerSpecial, trainerEmail, trainerPwd, trainerRole_id) {
+    function AddOrEditTraining(trainerId, trainerFio, trainerDateBirth, trainerNumber, trainerGender, trainerEmail, trainerPwd, trainerRole_id) 
+    {
         refreshTrainerList()
         var requestData =
         {
@@ -127,8 +122,6 @@ $(document).ready(function () {
             dateBirth: trainerDateBirth,
             number: trainerNumber,
             gender: trainerGender,
-            category_id: trainerCategory,
-            special_id: trainerSpecial,
             email: trainerEmail,
             pwd: trainerPwd,
             role_id: trainerRole_id
@@ -157,11 +150,13 @@ $(document).ready(function () {
         });
     }
 
-    $("#add").click(function () {
+    $("#add").click(function () 
+    {
         showModal();
     });
 
-    function confirmSave() {
+    function confirmSave() 
+    {
         var trainerId = $('#trainerId').val();
         var trainerFio = $('#trainerFio').val();
         var trainerDateBirth = $('#trainerDateBirth').val();
@@ -174,18 +169,19 @@ $(document).ready(function () {
         $('#confirmModal').modal('show').on('click', '#confirmSaveButton', function () {
             $('#confirmModal').modal('hide');
             $('#AddModal').modal('hide');
-            AddOrEditTraining(trainerId, trainerFio, trainerDateBirth, trainerNumber, trainerGender, trainerCategory, trainerSpecial, trainerEmail, trainerPwd, trainerRole_id);
+            AddOrEditTraining(trainerId, trainerFio, trainerDateBirth, trainerNumber, trainerGender, trainerEmail, trainerPwd, trainerRole_id);
         });
     }
 
-    $('#closeButton').click(function () {
+    $('#closeButton').click(function () 
+    {
         console.log('close');
         $('#AddModal').modal('hide');
     });
 
-    $('#cancelSaveButton').click(function () {
+    $('#cancelSaveButton').click(function () 
+    {
         $('#confirmModal').modal('hide');
     });
 });
-
 

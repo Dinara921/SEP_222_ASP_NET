@@ -44,7 +44,8 @@
             <!-- 2Блок -->
             <div class="Container_panel" id="Container_add">
                 <label for="add" class="labelAdd">Добавить тренировку</label><br>
-                <button type="button" class="btn btn-primary" id="add">Добавить</button>
+                <button type="button" class="btn btn-primary" id="add">Добавить</button><br><br>
+                <button type="button" class="btn btn-primary" id="zapis">Записи</button>
             </div>
 
             <!-- 3Блок -->
@@ -195,6 +196,23 @@
             </div>
         </div>
     </div>
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="myModalLabel">Информация о тренировках</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid" id="gridContainer">
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
 </body>

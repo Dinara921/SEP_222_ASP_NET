@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Data.SqlClient;
+using System.Text.Json.Nodes;
 
 namespace ASP_Ekz.Controllers
 {
@@ -14,31 +15,40 @@ namespace ASP_Ekz.Controllers
         string conStr = @"Server=DESKTOP-S23LER7;Database=ASP_Ekz;Trusted_Connection=True;TrustServerCertificate=Yes;";
         //string conStr = @"Server=206-11\SQLEXPRESS;Database=ASP_Ekz;Trusted_Connection=True;TrustServerCertificate=Yes;";
 
-        [HttpGet("AdminOrUser")]
-        public ActionResult AdminOrUser(string email, string pwd)
+        [HttpPost("AdminOrUser")]
+        public ActionResult AdminOrUser(AdminOrUser model)
         {
-            using (SqlConnection db = new SqlConnection(conStr))
+            try
             {
-                DynamicParameters parameters = new DynamicParameters();
-                parameters.Add("@email", email);
-                parameters.Add("@pwd", pwd);
-                parameters.Add("@userType", DbType.Int32, direction: ParameterDirection.Output);
-
-                db.Execute("pIsAdmin", parameters, commandType: CommandType.StoredProcedure);
-
-                int userType = parameters.Get<int>("@userType");
-
-                switch (userType)
+                using (SqlConnection db = new SqlConnection(conStr))
                 {
-                    case 1:
-                        return Ok("Client");
-                    case 2:
-                        return Ok("Admin");
-                    case 3:
-                        return Ok("Trainer");
-                    default:
-                        return NotFound();
+                    var parameters = new DynamicParameters();
+                    parameters.Add("@email", model.email);
+                    parameters.Add("@pwd", model.pwd);
+                    parameters.Add("@role_id", DbType.Int32, direction: ParameterDirection.Output);
+                    parameters.Add("@user_id", DbType.Int32, direction: ParameterDirection.Output);
+
+                    db.Execute("pIsAdmin", parameters, commandType: CommandType.StoredProcedure);
+
+                    int role_id = parameters.Get<int>("@role_id");
+                    int user_id = parameters.Get<int>("@user_id");
+
+                    switch (role_id)
+                    {
+                        case 1:
+                            return Ok(new { userType = "Client", user_id = user_id });
+                        case 2:
+                            return Ok(new { userType = "Admin", user_id = user_id });
+                        case 3:
+                            return Ok(new { userType = "Trainer", user_id = user_id });
+                        default:
+                            return NotFound();
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while processing your request: " + ex.Message);
             }
         }
 
@@ -61,22 +71,18 @@ namespace ASP_Ekz.Controllers
                 {
                     db.Open();
 
-                    SqlCommand cmd = new SqlCommand("pTraining", db);
-                    cmd.CommandType = CommandType.StoredProcedure;
+                    var parameters = new DynamicParameters();
+                    parameters.Add("@id", training.id);
+                    parameters.Add("@trainer_id", training.trainer_id);
+                    parameters.Add("@timeT_id", training.timeT_id);
+                    parameters.Add("@status_id", training.status_id);
+                    parameters.Add("@hall_id", training.hall_id);
+                    parameters.Add("@max_capacity", training.max_capacity);
+                    parameters.Add("@result", dbType: DbType.Int32, direction: ParameterDirection.Output);
 
-                    cmd.Parameters.AddWithValue("@id", training.id);
-                    cmd.Parameters.AddWithValue("@trainer_id", training.trainer_id);
-                    cmd.Parameters.AddWithValue("@timeT_id", training.timeT_id);
-                    cmd.Parameters.AddWithValue("@status_id", training.status_id);
-                    cmd.Parameters.AddWithValue("@hall_id", training.hall_id);
-                    cmd.Parameters.AddWithValue("@max_capacity", training.max_capacity);
+                    db.Execute("pTraining", parameters, commandType: CommandType.StoredProcedure);
 
-                    SqlParameter resultParam = cmd.Parameters.Add("@result", SqlDbType.Int);
-                    resultParam.Direction = ParameterDirection.Output;
-
-                    cmd.ExecuteNonQuery();
-
-                    int result = Convert.ToInt32(resultParam.Value);
+                    int result = parameters.Get<int>("@result");
 
                     var response = new { result = result };
 
@@ -210,39 +216,58 @@ namespace ASP_Ekz.Controllers
         [HttpGet("TrainingAttendance")]
         public ActionResult TrainingAttendance(int client_id, int training_id)
         {
-            using (SqlConnection db = new SqlConnection(conStr))
+            try
             {
-                var result = -1;
-
-                using (SqlCommand cmd = new SqlCommand("pTrainingAttendance", db))
+                using (SqlConnection db = new SqlConnection(conStr))
                 {
-                    cmd.CommandType = CommandType.StoredProcedure;
-
-                    cmd.Parameters.AddWithValue("@client_id", client_id);
-                    cmd.Parameters.AddWithValue("@training_id", training_id);
+                    var parameters = new DynamicParameters();
+                    parameters.Add("@client_id", client_id);
+                    parameters.Add("@training_id", training_id);
 
                     db.Open();
+                    int result = db.Execute("pTrainingAttendance", parameters, commandType: CommandType.StoredProcedure);
 
-                    result = cmd.ExecuteNonQuery();
+                    switch (result)
+                    {
+                        case 0:
+                            return Ok("Вы успешно записались на тренировку!");
+                        case -1:
+                            return BadRequest("Ошибка: тренировка не существует!");
+                        case -2:
+                            return BadRequest("Ошибка: все места на тренировке заняты!");
+                        case -3:
+                            return BadRequest("Ошибка: места на тренировке ограничены и уже заняты!");
+                        case -4:
+                            return BadRequest("Ошибка при обработке запроса!");
+                        default:
+                            return BadRequest("Неизвестная ошибка!");
+                    }
                 }
-
-                switch (result)
-                {
-                    case 0:
-                        return Ok("Вы успешно записались на тренировку!");
-                    case -1:
-                        return BadRequest("Ошибка: тренировка не существует!");
-                    case -2:
-                        return BadRequest("Ошибка: все места на тренировке заняты!");
-                    case -3:
-                        return BadRequest("Ошибка: места на тренировке ограничены и уже заняты!");
-                    case -4:
-                        return BadRequest("Ошибка при обработке запроса!");
-                    default:
-                        return BadRequest("Неизвестная ошибка!");
-                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while processing your request: " + ex.Message);
             }
         }
 
+        [HttpGet("GetTrainingAttendance")]
+        public IActionResult GetTrainingAttendance(int user_id)
+        {
+            using (SqlConnection db = new SqlConnection(conStr))
+            {
+                var res = db.Query<TrainingAttendance>("pTrainingAttendance;2", new { user_id }, commandType: CommandType.StoredProcedure);
+                return Ok(res);
+            }
+        }
+
+        [HttpGet("DeleteTrainingAttendance")]
+        public ActionResult DeleteTrainingAttendance(int id)
+        {
+            using (SqlConnection db = new SqlConnection(conStr))
+            {
+                var res = db.Query<TrainingAttendance>("pTrainingAttendance;3", new { id }, commandType: CommandType.StoredProcedure);
+                return Ok(res);
+            }
+        }
     }
 }
