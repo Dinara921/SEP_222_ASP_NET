@@ -1,0 +1,113 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="Content/jquery-confirm.css" rel="stylesheet" />
+    <link href="Content/style.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+    <script src="Script/jquery-3.4.1.min.js"></script>
+    <script src="Script/bootstrap.min.js"></script>
+    <script src="Script/jquery-confirm.js"></script>
+    <script src="Script/trainerJS.js"></script>
+    <style>
+        div#Grid_block {
+            background-color: #ffffff !important;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 1Блок -->
+    <div class="Block" id="Block">
+        <div class="Container" id="Container">
+            <div class="Container_panel" id="Container_search">
+                <label for="category" class="labelCategory">Поиск занятий</label>
+                <br>
+                <select name="form-select" class="category" id="category1">
+                    <option value="0" selected>Все залы</option>
+                    <option value="1">1 Зал</option>
+                    <option value="2">2 Зал</option>
+                    <option value="3">3 Зал</option>
+                </select>
+
+                <select name="form-select" class="category" id="category2">
+                    <option value="0" selected>Все тренера</option>
+                    <option value="1">Михайлова Мария</option>
+                    <option value="2">Оспанова Дания</option>
+                    <option value="3">Муратов Айбек</option>
+                </select>
+            </div>
+
+            <!-- 2Блок -->
+            <div class="Container_panel" id="Container_add">
+                <label for="add" class="labelAdd">Мои записи</label><br>
+                <button type="button" class="btn btn-primary" id="zapis">Записи</button>
+            </div>
+        </div>
+
+        <!-- Грид -->
+        <div class="container-fluid" id="Grid_block">
+
+        </div>
+
+        <!-- модуль ошибки -->
+
+        <div id="error-message" class="alert alert-danger" style="display: none;"></div>
+        <!-- confirm-ы -->
+        <div id="registerModal" class="modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Запись на тренировку</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="client_id">ID клиента:</label>
+                                <input type="text" class="form-control" id="client_id" placeholder="Введите ID клиента">
+                            </div>
+                            <div class="form-group">
+                                <label for="training_id">ID тренировки:</label>
+                                <input type="text" class="form-control" id="training_id"
+                                    placeholder="Введите ID тренировки">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                        <button id="saveBtn" type="button" class="btn btn-primary">Сохранить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="myModalLabel">Информация о тренировках</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid" id="gridContainer">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>

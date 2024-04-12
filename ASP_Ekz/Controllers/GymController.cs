@@ -63,7 +63,7 @@ namespace ASP_Ekz.Controllers
         }
 
         [HttpPost("AddOrUpdateTraining")]
-        public ActionResult AddOrUpdateTraining([FromBody] Training2 training)
+        public ActionResult AddOrUpdateTraining([FromBody] Training2 model)
         {
             try
             {
@@ -71,18 +71,23 @@ namespace ASP_Ekz.Controllers
                 {
                     db.Open();
 
-                    var parameters = new DynamicParameters();
-                    parameters.Add("@id", training.id);
-                    parameters.Add("@trainer_id", training.trainer_id);
-                    parameters.Add("@timeT_id", training.timeT_id);
-                    parameters.Add("@status_id", training.status_id);
-                    parameters.Add("@hall_id", training.hall_id);
-                    parameters.Add("@max_capacity", training.max_capacity);
-                    parameters.Add("@result", dbType: DbType.Int32, direction: ParameterDirection.Output);
+                    SqlCommand cmd = new SqlCommand("pTraining", db);
+                    cmd.CommandType = CommandType.StoredProcedure;
 
-                    db.Execute("pTraining", parameters, commandType: CommandType.StoredProcedure);
+                    cmd.Parameters.AddWithValue("@id", model.id);
+                    cmd.Parameters.AddWithValue("@trainer_id", model.trainer_id);
+                    cmd.Parameters.AddWithValue("@timeT_id", model.timeT_id);
+                    cmd.Parameters.AddWithValue("@status_id", model.status_id);
+                    cmd.Parameters.AddWithValue("@hall_id", model.hall_id);
+                    cmd.Parameters.AddWithValue("@max_capacity", model.max_capacity);
 
-                    int result = parameters.Get<int>("@result");
+                    SqlParameter resultParam = new SqlParameter("@result", SqlDbType.Int);
+                    resultParam.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(resultParam);
+
+                    cmd.ExecuteNonQuery();
+
+                    int result = Convert.ToInt32(resultParam.Value);
 
                     var response = new { result = result };
 
