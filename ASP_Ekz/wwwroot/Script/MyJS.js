@@ -52,7 +52,8 @@ $(document).ready(function ()
                 $("#Grid_block").append(tableHtml);
 
                 $(".delete-training").click(function () {
-                    var trainingId = $(this).data("trainingId");
+                    var $row = $(this).closest("tr");
+                    var trainingId = $row.find("td:eq(0)").text();
                     confirmDel(trainingId);
                 });
 
@@ -308,7 +309,8 @@ function refreshTrainingList() {
 
             $(".delete-training").click(function () 
             {
-                var trainingId = $(this).data("trainingId");
+                var $row = $(this).closest("tr");
+                var trainingId = $row.find("td:eq(0)").text();
                 confirmDel(trainingId);
             });
         },
